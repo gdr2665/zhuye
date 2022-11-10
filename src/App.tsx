@@ -1,13 +1,15 @@
-import {Layout, Menu} from 'tdesign-react'
-import 'tdesign-react/es/style/index.css';
-import './App.css';
+import {Layout, Menu, Tabs} from 'tdesign-react'
+import './App.less'
 import logo from './assets/logo.png'
+import Asked from "./asked";
+import Answered from "./answered"
 
 function App() {
-    const {Content, Footer, Aside} = Layout;
-    const {MenuItem} = Menu;
+    const {Content, Footer, Aside} = Layout
+    const {MenuItem} = Menu
+    const {TabPanel} = Tabs
     const Logo = () => <img width="116" src={logo} alt="logo"
-                            style={{paddingLeft: 25}}/>;
+                            style={{paddingLeft: 25}}/>
 
     return (
         <Layout>
@@ -20,9 +22,26 @@ function App() {
             </Aside>
             <Layout>
                 <Content style={{height: '100%', padding: 20}}>
-                    <div>Content</div>
+                    <Tabs placement={'top'} size={'medium'} disabled={false} theme={'card'} defaultValue={'0'}
+                          style={{height: '100%'}}>
+                        <TabPanel key='0' value='0' label='原问题'>
+                            <div className="tabs-content" style={{margin: 20, height: '100%'}}>
+                                <Asked></Asked>
+                            </div>
+                        </TabPanel>
+                        <TabPanel key='1' value='1' label='Hui Dazhe 的回答'>
+                            <div className="tabs-content" style={{margin: 20}}>
+                                <Answered></Answered>
+                            </div>
+                        </TabPanel>
+                        <TabPanel key='2' value='2' label='Ling Yiren 的回答'>
+                            <div className="tabs-content" style={{margin: 20}}>
+                                <Answered></Answered>
+                            </div>
+                        </TabPanel>
+                    </Tabs>
                 </Content>
-                <Footer>Copyright @ 2022 EZCoding Team. All Rights Reserved.</Footer>
+                <Footer style={{paddingTop: 4}}>© 2022 EZCoding Team, International School of BUPT.</Footer>
             </Layout>
         </Layout>
     )
