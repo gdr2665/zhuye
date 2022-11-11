@@ -1,4 +1,8 @@
 @import 'tdesign-react/es/style/index.css';
+@import './tools/ace-n.less';
+
+@error: rgba(255, 78, 78, 0.88);
+@warning: rgba(255, 165, 0, 0.88);
 
 body {
   padding: 0;
@@ -17,7 +21,7 @@ body {
 
 .name {
   font-size: var(--td-font-size-title-medium);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .secondary-info {
@@ -29,4 +33,101 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.main-ace {
+  width: 100% !important;
+  height: calc(~"100vh - 247px") !important;
+}
+
+.ace-active-marker {
+  border-bottom-style: solid !important;
+  border-bottom-width: 2.5px !important;
+  z-index: 1000 !important;
+}
+
+.ace-warning-marker {
+  border-bottom: 1.5px solid @warning;
+  position: absolute;
+
+  &.ace-active-marker {
+    border-bottom-color: deepskyblue;
+  }
+}
+
+.ace-error-marker {
+  border-bottom: 1.5px solid @error;
+  position: absolute;
+
+  &.ace-active-marker {
+    border-bottom-color: dodgerblue;
+  }
+}
+
+.ace-side-card .t-card__header {
+  padding-bottom: 0 !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+.ace-side-card .t-card__body {
+  padding-top: 8px !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  font-size: var(--td-font-size-body-medium);
+}
+
+.ace-side-card .t-card__title {
+  font-size: var(--td-font-size-body-medium);
+}
+
+.ace-side-card-error .t-card__title {
+  color: @error;
+}
+
+.right-float {
+  position: absolute;
+  right: 30px;
+  top: 67px;
+}
+
+.origin-float {
+  position: absolute;
+  top: 67px;
+  left: 0;
+}
+
+.ace-float-comment {
+  position: absolute;
+  width: 50px;
+
+  &.ace-fc-error {
+    color: @error;
+  }
+
+  &.ace-fc-warning {
+    color: @warning;
+  }
+}
+
+.ace-n {
+  visibility: hidden;
+}
+
+.ace-n.ace_gutter-cell {
+  visibility: visible;
+}
+
+.ace-n.ace_gutter-cell::before {
+  font-size: 10px;
+  margin-left: -30px;
+  margin-top: 30px;
+}
+
+.ace-n.ace_gutter-cell.ace-n-warning::before {
+  color: @warning;
+}
+
+.ace-n.ace_gutter-cell.ace-n-error::before {
+  color: @error;
 }
