@@ -39,6 +39,7 @@ function Answered(props: propsType) {
 
     /* Part 2, Code Marker Initializing */
     const editor: any = React.useRef(null)
+    const rightFloat: any = React.useRef(null)
     let [marker, setMarker] = React.useState<Array<InterMarker>>([])
     let [annotation, setAnnotation] = React.useState<Array<InterAnnotation>>([])
     let [markerMessage, setMarkerMessage] = React.useState<Array<string>>([])
@@ -70,8 +71,10 @@ function Answered(props: propsType) {
             startRow: 17, startCol: 4,
             endRow: 17, endCol: 10,
         }, "error");
-        const newMarkerMessage = markerMessage.concat("int 除以 int 结果还是 int，所以结果就错误了。你把 a 和 b 都乘 1.0 试试？")
+        let newMarkerMessage = markerMessage.concat(["int 除以 int 结果还是 int，所以结果就错误了。你把 a 和 b 都乘 1.0 试试？"])
         setMarkerMessage(newMarkerMessage)
+        editor.current.setMinLines((window.innerHeight - 247) / 19)
+        rightFloat.current.style.height = (Math.max(editor.current.getLines(), editor.current.getMinLines()) * 19).toString() + "px"
     }, [])
 
     return <>
@@ -89,7 +92,7 @@ function Answered(props: propsType) {
                     <$.WidthBox width={"calc(100% + 20px)"}>
                         <AceEditor ref={editor} readOnly={true} marker={marker}
                                    value={props.code} annotation={annotation}/>
-                        <Space direction={"vertical"} className={"right-float"}>
+                        <Space direction={"vertical"} className={"right-float"} ref={rightFloat}>
                             {marker.map((mark, index) => (
                                 <$.GestureDetector key={index}
                                                    onMouseOver={() => setMarkActive(index, true)}

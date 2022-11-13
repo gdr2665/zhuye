@@ -3,7 +3,7 @@ import "./tools/kit"
 import * as $ from "./tools/kit"
 import online from "./assets/online.png"
 import AceEditor from './tools/aceEditor'
-import React from "react";
+import React, {useEffect} from "react";
 
 type propsType = {
     title: string, time: string, code: string,
@@ -14,6 +14,10 @@ type propsType = {
 function Asked(props: propsType) {
     const Online = () => <img width="60" src={online} alt="online"/>
     const editor: any = React.useRef(null)
+    useEffect(() => {
+        editor.current.setMinLines((window.innerHeight - 247) / 19)
+    }, [])
+
     return <>
         <Row>
             <Col flex={"auto"}>
