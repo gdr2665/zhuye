@@ -1,9 +1,9 @@
 import {Button, Card, Col, Comment, Divider, Layout, Row, Space, Textarea, Tooltip} from "tdesign-react"
-import "./tools/kit"
-import * as $ from "./tools/kit"
-import online from "./assets/online.png"
+import "../tools/kit"
+import * as $ from "../tools/kit"
+import online from "../assets/online.png"
 
-import AceEditor, {InterAnnotation, InterMarker, InterPos} from './tools/aceEditor'
+import AceEditor, {InterAnnotation, InterMarker, InterPos} from '../tools/aceEditor'
 import React, {useEffect, useState} from "react";
 
 type propsType = {

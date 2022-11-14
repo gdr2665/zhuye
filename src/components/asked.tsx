@@ -1,8 +1,8 @@
 import {Button, Col, Row, Space, Tooltip} from "tdesign-react"
-import "./tools/kit"
-import * as $ from "./tools/kit"
-import online from "./assets/online.png"
-import AceEditor from './tools/aceEditor'
+import "../tools/kit"
+import * as $ from "../tools/kit"
+import online from "../assets/online.png"
+import AceEditor from '../tools/aceEditor'
 import React, {useEffect} from "react";
 
 type propsType = {
