@@ -104,6 +104,15 @@ export function BackBox(props: propsType) {
     )
 }
 
+export function SmallerBackBox(props: propsType) {
+    return (
+        <Box
+            style={{backgroundColor: "white", padding: "30px", margin: "10% 20% 5% 20%"}}>
+            {props.children}
+        </Box>
+    )
+}
+
 type linkPropsType = React.PropsWithChildren<{ to: string }>
 
 export function Link(props: linkPropsType) {
@@ -150,6 +159,45 @@ export function Palace() {
         <path d="M19 18V42" stroke="#333" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
         <path d="M29 18V42" stroke="#333" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
         <path d="M39 18V42" stroke="#333" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+}
+
+export function Communication() {
+    return <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"
+                className={"leftSideSvg"}>
+        <path d="M33 38H22V30H36V22H44V38H39L36 41L33 38Z" stroke="#333" strokeWidth="3" strokeLinecap="round"
+              strokeLinejoin="round"/>
+        <path d="M4 6H36V30H17L13 34L9 30H4V6Z" fill="none" stroke="#333" strokeWidth="3" strokeLinecap="round"
+              strokeLinejoin="round"/>
+        <path d="M19 18H20" stroke="#333" strokeWidth="3" strokeLinecap="round"/>
+        <path d="M26 18H27" stroke="#333" strokeWidth="3" strokeLinecap="round"/>
+        <path d="M12 18H13" stroke="#333" strokeWidth="3" strokeLinecap="round"/>
+    </svg>
+}
+
+export function Me() {
+    return <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"
+                className={"leftSideSvg"}>
+        <path fillRule="evenodd" clipRule="evenodd"
+              d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z"
+              stroke="#333" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+        <path
+            d="M24 23C26.7614 23 29 20.7614 29 18C29 15.2386 26.7614 13 24 13C21.2386 13 19 15.2386 19 18C19 20.7614 21.2386 23 24 23Z"
+            fill="none" stroke="#333" strokeWidth="3" strokeLinejoin="round"/>
+        <path d="M10.022 38.332C10.3657 33.1206 14.7016 29 20 29H28C33.2914 29 37.6229 33.1097 37.9767 38.3113"
+              stroke="#333" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+}
+
+export function MessageEmoji() {
+    return <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"
+                className={"leftSideSvg"}>
+        <path d="M44 7H4V37H11V42L21 37H44V7Z" fill="none" stroke="#333" strokeWidth="3" strokeLinecap="round"
+              strokeLinejoin="round"/>
+        <path d="M31 16V17" stroke="#333" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M17 16V17" stroke="#333" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M31 25C31 25 29 29 24 29C19 29 17 25 17 25" stroke="#333" strokeWidth="3" strokeLinecap="round"
+              strokeLinejoin="round"/>
     </svg>
 }
 

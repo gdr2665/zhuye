@@ -88,10 +88,10 @@ function Ask() {
             <Col flex={3}>
                 <Space direction="vertical" style={{padding: "25px 10px 0 50px", width: "calc(100% - 30px)"}}>
                     <Select value={lang} onChange={onLangSet}>
-                        <Select.Option key={1} label="C" value={1}/>
-                        <Select.Option key={2} label="C++" value={2}/>
-                        <Select.Option key={3} label="Java" value={3}/>
-                        <Select.Option key={4} label="Python" value={4}/>
+                        <Select.Option key={1} label="C (gcc)" value={1}/>
+                        <Select.Option key={2} label="C++ (g++)" value={2}/>
+                        <Select.Option key={3} label="Java (javac)" value={3}/>
+                        <Select.Option key={4} label="Python (python3)" value={4}/>
                     </Select>
                     <Textarea
                         value={content}
