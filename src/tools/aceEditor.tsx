@@ -64,7 +64,8 @@ export default class AceEditor extends React.Component<any, any> {
         super(props)
         this.editor = React.createRef()
         this.state = {
-            minLine: 33,
+            minLine: this.props.readOnly ? (window.innerHeight - 247) / 19
+                : (window.innerHeight - 307) / 19,
             language: 'c_cpp',
             marker: this.props.marker,
             annotation: this.props.annotation,
@@ -110,7 +111,7 @@ export default class AceEditor extends React.Component<any, any> {
                 mode={this.state.language}
                 theme="crimson_editor"
                 ref={this.editor}
-                placeholder="在这里输入你的代码 ..."
+                placeholder="// 在这里输入你的代码 ..."
                 fontSize={14}
                 minLines={this.state.minLine}
                 maxLines={100}

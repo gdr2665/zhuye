@@ -11,6 +11,16 @@ export function Title(props: propsType) {
     )
 }
 
+/// Display title of a Page.
+export function LargeTitle(props: propsType) {
+    return (
+        <div className={"large-title"}>
+            {props.children}
+        </div>
+    )
+}
+
+
 /// Display primary info.
 export function Info(props: propsType) {
     return (
@@ -86,6 +96,22 @@ export function Box(props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivE
     )
 }
 
+export function BackBox(props: propsType) {
+    return (
+        <Box style={{backgroundColor: "white", height: "calc(100% - 60px)", padding: "30px"}}>
+            {props.children}
+        </Box>
+    )
+}
+
+type linkPropsType = React.PropsWithChildren<{ to: string }>
+
+export function Link(props: linkPropsType) {
+    return (
+        <a href={props.to}>{props.children}</a>
+    )
+}
+
 export function ThinkingProblem() {
     return <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"
                 className={"leftSideSvg"}>
@@ -125,4 +151,18 @@ export function Palace() {
         <path d="M29 18V42" stroke="#333" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
         <path d="M39 18V42" stroke="#333" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
+}
+
+export enum LangEnum {
+    'Lang_1' = 'C',
+    'Lang_2' = 'C++',
+    'Lang_3' = 'Java',
+    'Lang_4' = 'Python'
+}
+
+export enum LangEnumFromLang {
+    'C' = '1',
+    'C++' = '2',
+    'Java' = '3',
+    'Python' = '4'
 }

@@ -1,17 +1,33 @@
 @import 'tdesign-react/es/style/index.css';
 @import './tools/ace-n.less';
 
+// Color Definition
 @error: rgba(255, 78, 78, 0.88);
 @warning: rgba(255, 165, 0, 0.88);
 
+// Basics
 body {
   padding: 0;
   margin: 0;
 }
 
+.vertical-center {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+// Text Style
 .title {
   font-size: var(--td-font-size-title-large);
   font-weight: 600;
+}
+
+.large-title {
+  font-size: calc(var(--td-font-size-title-large) * 1.4);
+  font-weight: 600;
+  padding-top: 5px;
+  padding-bottom: 25px;
 }
 
 .info {
@@ -29,12 +45,20 @@ body {
   color: var(--td-gray-color-6);
 }
 
-.vertical-center {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+// Navigator
+.leftSideSvg {
+  padding-top: 11.5px;
 }
 
+.t-is-active .leftSideSvg path {
+  stroke: white;
+}
+
+.t-menu__item-link {
+  padding-right: 20px;
+}
+
+// Ace Editor
 .main-ace {
   width: 100% !important;
 }
@@ -133,10 +157,4 @@ body {
   color: @error;
 }
 
-.leftSideSvg {
-  padding-top: 11.5px;
-}
-
-.t-is-active .leftSideSvg path {
-  stroke: white;
-}
+// Ask Page

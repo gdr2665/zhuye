@@ -73,7 +73,6 @@ function Answered(props: propsType) {
         }, "error");
         let newMarkerMessage = markerMessage.concat(["int 除以 int 结果还是 int，所以结果就错误了。你把 a 和 b 都乘 1.0 试试？"])
         setMarkerMessage(newMarkerMessage)
-        editor.current.setMinLines((window.innerHeight - 247) / 19)
         rightFloat.current.style.height = (Math.max(editor.current.getLines(), editor.current.getMinLines()) * 19).toString() + "px"
     }, [])
 
