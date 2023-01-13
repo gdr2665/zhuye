@@ -12,6 +12,7 @@ import User from "./pages/User";
 import Report from "./pages/Report";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Problem from "./pages/Problem";
 
 function App() {
     const {Content, Footer, Aside} = Layout
@@ -27,6 +28,7 @@ function App() {
                     <MenuItem value="1" href={"/ask"}><ThinkingProblem/></MenuItem>
                     <MenuItem value="2" href={"/"}><Palace/></MenuItem>
                     <MenuItem value="3" href={"/explore"}><SignalTower/></MenuItem>
+                    <MenuItem value="3" href={"/problem"}>临时例子</MenuItem>
                     <Divider className={"leftDown"}></Divider>
                     <MenuItem value="4" href={logon ? "/user" : "/register"}><Me/></MenuItem>
                     <MenuItem value="5" href={"/report"}><MessageEmoji/></MenuItem>
@@ -43,6 +45,7 @@ function App() {
                             <Route path="report" element={<Report/>}/>
                             <Route path="login" element={<Login/>}/>
                             <Route path="register" element={<Register/>}/>
+                            <Route path="problem" element={<Problem/>}/>
                         </Routes>
                     </BrowserRouter>
                 </Content>
