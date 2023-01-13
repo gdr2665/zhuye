@@ -96,6 +96,7 @@ export function Box(props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivE
     )
 }
 
+/// This is used as a base box, which stretch fully.
 export function BackBox(props: propsType) {
     return (
         <Box style={{backgroundColor: "white", height: "calc(100% - 60px)", padding: "30px"}}>
@@ -104,6 +105,8 @@ export function BackBox(props: propsType) {
     )
 }
 
+/// This is used as a base box, which won't stretch to the maximum size of a page.
+/// We're using it in pages for example `report`, `register` and `login`.
 export function SmallerBackBox(props: propsType) {
     return (
         <Box
@@ -115,11 +118,14 @@ export function SmallerBackBox(props: propsType) {
 
 type linkPropsType = React.PropsWithChildren<{ to: string }>
 
+/// This is a wrapper for `<a>`.
 export function Link(props: linkPropsType) {
     return (
         <a href={props.to}>{props.children}</a>
     )
 }
+
+// Below are the definition of all icons.
 
 export function ThinkingProblem() {
     return <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"

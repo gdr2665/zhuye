@@ -1,3 +1,7 @@
+// 1.13 记：本代码到目前为止部分采用详细的知识点备注，以利初期阅读，对代码进行修改的时候不用这么备注
+// 本代码备注不包含 /pages/Ask.tsx 中已经备注过的部分
+// 本文件实现了一个自定义组件，用于展示用户对问题的回答，对其具体引用的实例可以见 /pages/Problem.tsx
+
 import {Button, Card, Col, Comment, Divider, Layout, Row, Space, Textarea, Tooltip} from "tdesign-react"
 import "../tools/kit"
 import * as $ from "../tools/kit"
@@ -6,6 +10,9 @@ import online from "../assets/online.png"
 import AceEditor, {InterAnnotation, InterMarker, InterPos} from '../tools/aceEditor'
 import React, {useEffect, useState} from "react";
 
+// something={} 中的 something 可以是什么，使用 prop 来定义
+// 而因为 TypeScript 要求强制类型，所以 prop 定义形式长下面这样
+// 如果是一个组件，就有这个，页面则是用 router 处理
 type propsType = {
     title: string, askedTime: string, code: string, asker: string,
     answerer: string, answererFrom: string, online: boolean, answeredTime: string,
@@ -76,6 +83,8 @@ function Answered(props: propsType) {
         rightFloat.current.style.height = (Math.max(editor.current.getLines(), editor.current.getMinLines()) * 19).toString() + "px"
     }, [])
 
+    // 下文中有一个 {marker.map((mark, index) => { ... \n ... \n ... }} 表示对每一个 marker
+    // 进行 foreach 循环，每次提取其 mark, index 两个参数，按 (...) 中要求构建一个 html 元素
     return <>
         <Row>
             <Col flex={"auto"}>
