@@ -162,4 +162,26 @@ body {
   color: @error;
 }
 
-// Ask Page
+// Media Query
+@media (max-width: 650px) {
+  .ask-left {
+    width: calc(100vw - 172px) !important;
+  }
+
+  .ask-right .t-space {
+    width: calc(100vw - 172px) !important;
+    padding-left: 0 !important;
+  }
+}
+
+@media (max-width: 960px) {
+  .problem-left {
+    width: calc(100vw - 172px) !important;
+  }
+
+  .problem-right .problem-right-child {
+    width: calc(100vw - 172px) !important;
+    padding-left: 0 !important;
+    padding-top: 30px !important;
+  }
+}

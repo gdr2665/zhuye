@@ -87,7 +87,7 @@ function Answered(props: propsType) {
     // 进行 foreach 循环，每次提取其 mark, index 两个参数，按 (...) 中要求构建一个 html 元素
     return <>
         <Row>
-            <Col flex={"auto"}>
+            <Col flex={"auto"} class={"problem-left"}>
                 <Space direction={"vertical"} style={{width: "calc(100% - 20px)"}}>
                     <Space direction={"vertical"} size={"small"}>
                         <$.Title>
@@ -117,8 +117,8 @@ function Answered(props: propsType) {
                     </$.WidthBox>
                 </Space>
             </Col>
-            <Col flex={"290px"}>
-                <Space direction={"vertical"} size={"medium"}>
+            <Col flex={"290px"} class={"problem-right"}>
+                <Space direction={"vertical"} size={"medium"} className={"problem-right-child"}>
                     <Space className={"vertical-center"} size={0}>
                         <Space direction={"vertical"} size={0} style={{width: "165px"}}>
                             <$.Name>

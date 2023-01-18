@@ -3,19 +3,24 @@
 
 // import ... from 可以引用我这个页面用到了的别的包
 import * as $ from "../tools/kit"
-import React, {useState} from "react";
-import {Button, Col, Input, Row, Select, SelectValue, Space, Textarea} from "tdesign-react";
-import AceEditor, {InterAnnotation, InterMarker, InterPos} from "../tools/aceEditor";
+import React, {useState} from "react"
+import {Button, Col, Input, Row, Select, SelectValue, Space, Textarea} from "tdesign-react"
+import AceEditor, {InterAnnotation, InterMarker, InterPos} from "../tools/aceEditor"
+import {Language, ProblemType, QuestionDetailDTO, AFConvert} from "../tools/apifox";
 
 function Ask() {
     // Form Set
     // useState 表示一个值，用前者访问这个值，后者修改这个值
     const [title, setTitle] = useState('');
-    const [tips, setTips] = useState('');
+    const [titleTips, setTitleTips] = useState('');
     const [content, setContent] = useState('');
-    const [lang, setLang] = useState(1);
+    const [reward, setReward] = useState('');
+    const rewardInputStatus = isNaN(+reward) ? 'error' : undefined;
+    const rewardTips = rewardInputStatus ? '请输入数字' : '';
+    // 下面是 useState 用于枚举类型的范例
+    const [lang, setLang] = useState(Language.Java);
     const onLangSet = (val: SelectValue) => {
-        setLang(Number(val.toString()));
+        setLang(Language[AFConvert.upperToCapital(val.toString()) as keyof typeof Language]);
     };
 
     // Marking
@@ -53,18 +58,37 @@ function Ask() {
 
     // Form Submit
     // 这几个是提交问题时用的函数以及变量
-    let result = {}
+    let data: QuestionDetailDTO = {
+        code: "",
+        title: "",
+        language: Language['C'],
+        description: "",
+        problemType: ProblemType.Other,
+    };
     const toTempSave = (e: React.MouseEvent) => {
-        result = {
-            "title": title,
-            "lang": lang,
-            "content": content,
-            "code": editor.current.getCode(),
-            "mark": marker,
-        }
+        data = {
+            code: editor.current.getCode(),
+            title: title,
+            language: lang,
+            description: content,
+            problemType: ProblemType.Other,
+        };
     }
     const toSubmit = (e: React.MouseEvent) => {
-        toTempSave(e)
+        toTempSave(e);
+        var myHeaders = new Headers();
+        myHeaders.append("User-Agent", "Apifox/1.0.0 (https://www.apifox.cn)");
+        myHeaders.append("Content-Type", "application/json");
+        var raw = AFConvert.questionDetailDTOToJson(data);
+        fetch("http://127.0.0.1:8080/question", {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        })
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
     }
 
     // 最后这个 return 内内容契合 html 语法
@@ -76,7 +100,7 @@ function Ask() {
     return <$.BackBox>
         <$.LargeTitle>提问</$.LargeTitle>
         <Row>
-            <Col flex={7}>
+            <Col flex={7} class={"ask-left"}>
                 <Space direction="vertical" style={{width: "100%"}}>
                     <Input
                         value={title}
@@ -86,12 +110,12 @@ function Ask() {
                         showLimitNumber
                         placeholder="在这里输入标题"
                         size={"large"}
-                        tips={tips}
+                        tips={titleTips}
                         style={{width: "60%"}}
-                        status={tips ? 'error' : 'default'}
+                        status={titleTips ? 'error' : 'default'}
                         onValidate={({error}) => {
                             console.log(error);
-                            setTips(error ? '输入内容长度不允许超过 20 个字' : '');
+                            setTitleTips(error ? '输入内容长度不允许超过 20 个字' : '');
                         }}
                     />
                     <AceEditor ref={editor} readOnly={false} marker={marker}
@@ -102,14 +126,22 @@ function Ask() {
                     </Space>
                 </Space>
             </Col>
-            <Col flex={3}>
+            <Col flex={3} class={"ask-right"}>
                 <Space direction="vertical" style={{padding: "25px 10px 0 50px", width: "calc(100% - 30px)"}}>
                     <Select value={lang} onChange={onLangSet}>
-                        <Select.Option key={1} label="C (gcc)" value={1}/>
-                        <Select.Option key={2} label="C++ (g++)" value={2}/>
-                        <Select.Option key={3} label="Java (javac)" value={3}/>
-                        <Select.Option key={4} label="Python (python3)" value={4}/>
+                        <Select.Option label="C (gcc)" value={Language.C}/>
+                        <Select.Option label="C++ (g++)" value={Language.Cpp}/>
+                        <Select.Option label="Python (python3)" value={Language.Python}/>
+                        <Select.Option label="Java (javac)" value={Language.Java}/>
                     </Select>
+                    <Input
+                        value={reward}
+                        onChange={setReward}
+                        status={rewardInputStatus}
+                        tips={rewardTips}
+                        placeholder="在这里输入悬赏金币数量"
+                        style={{width: "100%"}}
+                    />
                     <Textarea
                         value={content}
                         onChange={setContent}

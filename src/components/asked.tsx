@@ -20,7 +20,7 @@ function Asked(props: propsType) {
 
     return <>
         <Row>
-            <Col flex={"auto"}>
+            <Col flex={"auto"} class={"problem-left"}>
                 <Space direction={"vertical"} style={{width: "calc(100% - 20px)"}}>
                     <Space direction={"vertical"} size={"small"}>
                         <$.Title>
@@ -33,8 +33,8 @@ function Asked(props: propsType) {
                     <AceEditor ref={editor} readOnly={true} value={props.code}/>
                 </Space>
             </Col>
-            <Col flex={"290px"}>
-                <Space direction={"vertical"} size={"large"} style={{width: "290px"}}>
+            <Col flex={"290px"} class={"problem-right"}>
+                <Space direction={"vertical"} size={"large"} style={{width: "290px"}} className={"problem-right-child"}>
                     <Space className={"vertical-center"} size={0}>
                         <Space direction={"vertical"} size={0} style={{width: "165px"}}>
                             <$.Name>
