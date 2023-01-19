@@ -207,16 +207,12 @@ export function MessageEmoji() {
     </svg>
 }
 
-export enum LangEnum {
-    'Lang_1' = 'C',
-    'Lang_2' = 'C++',
-    'Lang_3' = 'Java',
-    'Lang_4' = 'Python'
-}
-
-export enum LangEnumFromLang {
-    'C' = '1',
-    'C++' = '2',
-    'Java' = '3',
-    'Python' = '4'
+export function upperToCapital(upper: string): string {
+    var upArr = upper.split("");
+    var capArr: Array<String> = [];
+    for (var _i = 0; _i < upArr.length; _i++) {
+        if (_i == 0 || upArr[_i - 1] == "_") capArr.push(upArr[_i].toUpperCase());
+        else capArr.push(upArr[_i].toLowerCase());
+    }
+    return capArr.join("");
 }

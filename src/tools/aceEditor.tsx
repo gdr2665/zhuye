@@ -50,6 +50,7 @@ export default class AceEditor extends React.Component<any, any> {
         value: PropTypes.string,
         className: PropTypes.string,
         annotation: PropTypes.array,
+        onChange: PropTypes.func,
     }
 
     static defaultProps = {
@@ -58,6 +59,7 @@ export default class AceEditor extends React.Component<any, any> {
         readOnly: false,
         value: '',
         className: 'main-ace',
+        onChange: null,
     }
 
     constructor(props: InterState) {
@@ -69,6 +71,7 @@ export default class AceEditor extends React.Component<any, any> {
             language: 'c_cpp',
             marker: this.props.marker,
             annotation: this.props.annotation,
+            onChange: this.props.onChange,
         }
     }
 
@@ -135,6 +138,7 @@ export default class AceEditor extends React.Component<any, any> {
                     type: 'info'
                 }))}
                 value={this.props.value}
+                onChange={this.props.onChange}
             />
         )
     }

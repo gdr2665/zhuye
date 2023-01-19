@@ -1,8 +1,8 @@
 // To parse this data:
 //
-//   import { AFConvert, QuestionDetailDTO } from "./tools/apifox";
+//   import { Convert, QuestionDetailDTO } from "./tools/apifox";
 //
-//   const questionDetailDTO = AFConvert.toQuestionDetailDTO(json);
+//   const questionDetailDTO = Convert.toQuestionDetailDTO(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
@@ -102,23 +102,13 @@ export enum Role {
 
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
-export class AFConvert {
+export class Convert {
     public static toQuestionDetailDTO(json: string): QuestionDetailDTO {
         return cast(JSON.parse(json), r("QuestionDetailDTO"));
     }
 
     public static questionDetailDTOToJson(value: QuestionDetailDTO): string {
         return JSON.stringify(uncast(value, r("QuestionDetailDTO")), null, 2);
-    }
-
-    public static upperToCapital(upper: string): string {
-        var upArr = upper.split("");
-        var capArr: Array<String> = [];
-        for (var _i = 0; _i < upArr.length; _i++) {
-            if (_i == 0 || upArr[_i - 1] == "_") capArr.push(upArr[_i].toUpperCase());
-            else capArr.push(upArr[_i].toLowerCase());
-        }
-        return capArr.join("");
     }
 }
 
