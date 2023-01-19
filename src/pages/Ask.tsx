@@ -3,19 +3,34 @@
 
 // import ... from 可以引用我这个页面用到了的别的包
 import * as $ from "../tools/kit"
-import React, {useState} from "react";
-import {Button, Col, Input, Row, Select, SelectValue, Space, Textarea} from "tdesign-react";
-import AceEditor, {InterAnnotation, InterMarker, InterPos} from "../tools/aceEditor";
+import React, {useEffect, useState} from "react"
+import {Button, Col, Input, MessagePlugin, Row, Select, SelectValue, Space, Textarea} from "tdesign-react"
+import AceEditor, {InterAnnotation, InterMarker, InterPos} from "../tools/aceEditor"
+import {Language, ProblemType, QuestionDetailDTO, Convert} from "../tools/apifox";
+import {useNavigate} from "react-router-dom";
+import axios from "axios";
 
 function Ask() {
     // Form Set
     // useState 表示一个值，用前者访问这个值，后者修改这个值
-    const [title, setTitle] = useState('');
-    const [tips, setTips] = useState('');
-    const [content, setContent] = useState('');
-    const [lang, setLang] = useState(1);
+    let strSaved = localStorage.getItem("questionToBeAsked");
+    var saved = {code: "", reward: "", language: "JAVA", description: "", title: ""};
+    if (strSaved != null) {
+        saved = JSON.parse(strSaved);
+    }
+    const [title, setTitle] = useState(saved.title);
+    const [code, setCode] = useState(saved.code);
+    const [titleTips, setTitleTips] = useState('');
+    const [content, setContent] = useState(saved.description);
+    let rewardStr = "";
+    if (saved.reward != null) rewardStr = saved.reward.toString();
+    const [reward, setReward] = useState(rewardStr);
+    const rewardInputStatus = isNaN(+reward) ? 'error' : undefined;
+    let rewardTips = rewardInputStatus ? '请输入数字' : '';
+    // 下面是 useState 用于枚举类型的范例
+    const [lang, setLang] = useState(Language[$.upperToCapital(saved.language) as keyof typeof Language]);
     const onLangSet = (val: SelectValue) => {
-        setLang(Number(val.toString()));
+        setLang(Language[$.upperToCapital(val.toString()) as keyof typeof Language]);
     };
 
     // Marking
@@ -53,18 +68,80 @@ function Ask() {
 
     // Form Submit
     // 这几个是提交问题时用的函数以及变量
-    let result = {}
+    let navigate = useNavigate();
+    let data: QuestionDetailDTO = {
+        code: "",
+        title: "",
+        language: Language['C'],
+        description: "",
+        problemType: ProblemType.Other,
+    };
     const toTempSave = (e: React.MouseEvent) => {
-        result = {
-            "title": title,
-            "lang": lang,
-            "content": content,
-            "code": editor.current.getCode(),
-            "mark": marker,
-        }
+        let rewardInt: number | null = null;
+        if (reward != "") rewardInt = parseInt(reward);
+        data = {
+            code: editor.current.getCode(),
+            title: title,
+            language: lang,
+            description: content,
+            problemType: ProblemType.Other,
+            reward: rewardInt,
+        };
+        localStorage.setItem("questionToBeAsked", Convert.questionDetailDTOToJson(data));
+    }
+    const toTempSaveAndResponse = (e: React.MouseEvent) => {
+        toTempSave(e);
+        MessagePlugin.success('当前提问数据在本地保存成功。');
     }
     const toSubmit = (e: React.MouseEvent) => {
-        toTempSave(e)
+        toTempSave(e);
+        var rconfig = {
+            method: 'get',
+            url: 'http://127.0.0.1:8080/user/saving',
+            headers: {
+                'User-Agent': 'Apifox/1.0.0 (https://www.apifox.cn)'
+            }
+        };
+        axios(rconfig)
+            .then(function (rresponse) {
+                var coins: number = rresponse.data.coins;
+                var coinsEnough = true;
+                if (data.reward != null) {
+                    if (coins < data.reward) coinsEnough = false;
+                }
+                if (coinsEnough) {
+                    var raw = Convert.questionDetailDTOToJson(data);
+                    var config = {
+                        method: 'post',
+                        url: 'http://127.0.0.1:8080/question',
+                        headers: {
+                            'User-Agent': 'Apifox/1.0.0 (https://www.apifox.cn)',
+                            'Content-Type': 'application/json'
+                        },
+                        data: raw
+                    };
+                    axios(config)
+                        .then(function (response) {
+                            let id: number = JSON.parse(response.data).id;
+                            console.log(id);
+                            MessagePlugin.success('提问成功！');
+                            localStorage.removeItem("questionToBeAsked");
+                            // TODO: 悬赏从用户的金币里扣除（API暂无）
+                            navigate("/");
+                        })
+                        .catch(function (error) {
+                            console.log('error', error);
+                            MessagePlugin.error('提问失败：' + error);
+                        });
+                } else {
+                    MessagePlugin.error('提问失败，当前金币数量小于设定的悬赏额');
+                }
+            })
+            .catch(function (rerror) {
+                console.log(rerror);
+                MessagePlugin.error('提问失败：' + rerror);
+            });
+
     }
 
     // 最后这个 return 内内容契合 html 语法
@@ -76,7 +153,7 @@ function Ask() {
     return <$.BackBox>
         <$.LargeTitle>提问</$.LargeTitle>
         <Row>
-            <Col flex={7}>
+            <Col flex={7} className={"ask-left"}>
                 <Space direction="vertical" style={{width: "100%"}}>
                     <Input
                         value={title}
@@ -86,30 +163,40 @@ function Ask() {
                         showLimitNumber
                         placeholder="在这里输入标题"
                         size={"large"}
-                        tips={tips}
+                        tips={titleTips}
                         style={{width: "60%"}}
-                        status={tips ? 'error' : 'default'}
+                        status={titleTips ? 'error' : 'default'}
                         onValidate={({error}) => {
-                            console.log(error);
-                            setTips(error ? '输入内容长度不允许超过 20 个字' : '');
+                            if (error != undefined) {
+                                console.log(error);
+                                setTitleTips(error ? '输入内容长度不允许超过 20 个字' : '');
+                            }
                         }}
                     />
                     <AceEditor ref={editor} readOnly={false} marker={marker}
-                               value={""} annotation={annotation}/>
+                               value={code} onChange={setCode} annotation={annotation}/>
                     <Space>
                         <Button theme="default" onClick={toSubmit}>公开提问</Button>
-                        <Button theme="default" variant="outline" onClick={toTempSave}>草稿保存</Button>
+                        <Button theme="default" variant="outline" onClick={toTempSaveAndResponse}>草稿保存</Button>
                     </Space>
                 </Space>
             </Col>
-            <Col flex={3}>
+            <Col flex={3} className={"ask-right"}>
                 <Space direction="vertical" style={{padding: "25px 10px 0 50px", width: "calc(100% - 30px)"}}>
                     <Select value={lang} onChange={onLangSet}>
-                        <Select.Option key={1} label="C (gcc)" value={1}/>
-                        <Select.Option key={2} label="C++ (g++)" value={2}/>
-                        <Select.Option key={3} label="Java (javac)" value={3}/>
-                        <Select.Option key={4} label="Python (python3)" value={4}/>
+                        <Select.Option label="C (gcc)" value={Language.C}/>
+                        <Select.Option label="C++ (g++)" value={Language.Cpp}/>
+                        <Select.Option label="Python (python3)" value={Language.Python}/>
+                        <Select.Option label="Java (javac)" value={Language.Java}/>
                     </Select>
+                    <Input
+                        value={reward}
+                        onChange={setReward}
+                        status={rewardInputStatus}
+                        tips={rewardTips}
+                        placeholder="在这里输入悬赏金币数量"
+                        style={{width: "100%"}}
+                    />
                     <Textarea
                         value={content}
                         onChange={setContent}
