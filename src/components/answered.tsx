@@ -2,13 +2,28 @@
 // 本代码备注不包含 /pages/Ask.tsx 中已经备注过的部分
 // 本文件实现了一个自定义组件，用于展示用户对问题的回答，对其具体引用的实例可以见 /pages/Problem.tsx
 
-import {Button, Card, Col, Comment, Divider, Layout, Row, Space, Textarea, Tooltip} from "tdesign-react"
+import {
+    Button,
+    Card,
+    Col,
+    Comment,
+    Dialog,
+    DialogCloseContext,
+    Divider,
+    Input,
+    Layout,
+    Row,
+    Space,
+    Textarea,
+    Tooltip
+} from "tdesign-react"
 import "../tools/kit"
 import * as $ from "../tools/kit"
 import online from "../assets/online.png"
 
 import AceEditor, {InterAnnotation, InterMarker, InterPos} from '../tools/aceEditor'
 import React, {useEffect, useState} from "react";
+import {Convert, ProblemType} from "../tools/apifox";
 
 // something={} 中的 something 可以是什么，使用 prop 来定义
 // 而因为 TypeScript 要求强制类型，所以 prop 定义形式长下面这样
@@ -22,6 +37,16 @@ function Answered(props: propsType) {
     const Online = () => <img width="60" src={online} alt="online"/>
     const Content = Layout
     let [upVotes, setUpVotes] = useState(0)
+    const [reportDialogVisible, setReportDialogVisible] = useState(false);
+    const toSetRDV_T = (e: React.MouseEvent) => {
+        setReportDialogVisible(true);
+    }
+    const toSetRDV_F_M = (context: { e: React.MouseEvent<HTMLButtonElement, MouseEvent>; }) => {
+        setReportDialogVisible(false);
+    }
+    const toSetRDV_F_D = (context: DialogCloseContext) => {
+        setReportDialogVisible(false);
+    }
 
     /* Part 1, Comments Initializing */
     let [replyData, setReplayData] = useState('')
@@ -87,7 +112,7 @@ function Answered(props: propsType) {
     // 进行 foreach 循环，每次提取其 mark, index 两个参数，按 (...) 中要求构建一个 html 元素
     return <>
         <Row>
-            <Col flex={"auto"} class={"problem-left"}>
+            <Col flex={"auto"} className={"problem-left"}>
                 <Space direction={"vertical"} style={{width: "calc(100% - 20px)"}}>
                     <Space direction={"vertical"} size={"small"}>
                         <$.Title>
@@ -117,7 +142,7 @@ function Answered(props: propsType) {
                     </$.WidthBox>
                 </Space>
             </Col>
-            <Col flex={"290px"} class={"problem-right"}>
+            <Col flex={"290px"} className={"problem-right"}>
                 <Space direction={"vertical"} size={"medium"} className={"problem-right-child"}>
                     <Space className={"vertical-center"} size={0}>
                         <Space direction={"vertical"} size={0} style={{width: "165px"}}>
@@ -129,10 +154,12 @@ function Answered(props: propsType) {
                             </$.SecondaryInfo>
                         </Space>
                         <$.Nbsp width={"3"}/>
-                        <Tooltip content="举报功能暂未开放，请向老师举报" trigger="click">
-                            <Button variant={"text"} size={"small"} theme={"danger"}
-                                    style={{opacity: "0.6"}}>举报</Button>
-                        </Tooltip>
+                        <Button variant={"text"} size={"small"} theme={"danger"}
+                                style={{opacity: "0.6"}} onClick={toSetRDV_T}>举报</Button>
+                        <Dialog header="请输入举报理由" visible={reportDialogVisible} onClose={toSetRDV_F_D}
+                                onCancel={toSetRDV_F_M}>
+                            <Input placeholder={"暂未开放，请向老师举报"}></Input>
+                        </Dialog>
                         <$.Nbsp width={"18"}/>
                         {props.online && <Online></Online>}
                     </Space>
