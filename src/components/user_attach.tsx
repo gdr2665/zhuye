@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Link } from "react-router-dom";
-import './user_attach.css'
+import {useState} from 'react';
+import {Link} from "react-router-dom";
+import './user_attach.less'
 
 const UserAttach = () => {
 
@@ -26,11 +26,11 @@ const UserAttach = () => {
                         <p> {drop_state[0] ? '合上' : '展开'}</p>
                     </div>
                     <div className="dropmenu"
-                        style={
-                            {
-                                display: `${drop_state[0] ? 'block' : 'none'}`,
-                            }
-                        }
+                         style={
+                             {
+                                 display: `${drop_state[0] ? 'block' : 'none'}`,
+                             }
+                         }
                     >
                         <div className="menu_row">
                             <Link to='/problem'>提问1</Link>
@@ -53,11 +53,11 @@ const UserAttach = () => {
                         <p> {drop_state[1] ? '合上' : '展开'}</p>
                     </div>
                     <div className="dropmenu"
-                        style={
-                            {
-                                display: `${drop_state[1] ? 'block' : 'none'}`,
-                            }
-                        }
+                         style={
+                             {
+                                 display: `${drop_state[1] ? 'block' : 'none'}`,
+                             }
+                         }
                     >
                         <div className="menu_row">
                             回答1

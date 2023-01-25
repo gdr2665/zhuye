@@ -8,11 +8,11 @@ import Ask from "./pages/Ask";
 import React from "react";
 import Explore from "./pages/Explore";
 import Square from "./pages/Square";
-import User from "./pages/User";
 import Report from "./pages/Report";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Problem from "./pages/Problem";
+import UserCenter from './pages/UserCenter';
 
 function App() {
     const {Content, Footer, Aside} = Layout
@@ -41,7 +41,7 @@ function App() {
                             <Route path="/" element={<Square/>}/>
                             <Route path="ask" element={<Ask/>}/>
                             <Route path="explore" element={<Explore/>}/>
-                            <Route path="user" element={<User/>}/>
+                            <Route path="user" element={<UserCenter/>}/>
                             <Route path="report" element={<Report/>}/>
                             <Route path="login" element={<Login/>}/>
                             <Route path="register" element={<Register/>}/>

@@ -1,6 +1,6 @@
-import { useRef, useEffect, useState } from 'react';
+import {useRef, useEffect, useState} from 'react';
 import axios from 'axios';
-import { Divider, Row, Col, Dialog } from 'tdesign-react';
+import {Divider, Row, Col, Dialog} from 'tdesign-react';
 import * as $ from "../tools/kit"
 import UserAttach from '../components/user_attach';
 import UpdateUserForm from '../components/update_user_info_form';
@@ -78,16 +78,13 @@ function UserCenter() {
     }, []);
 
 
-
-
-
     return <$.BackBox>
         <h1>用户中心</h1>
         <Divider></Divider>
 
         {/*用户基本信息*/}
         <Row
-            gutter={{ xs: 8, sm: 16, md: 24, }}
+            gutter={{xs: 8, sm: 16, md: 24,}}
         >
             <Col span={5}>
                 <Row
@@ -136,13 +133,13 @@ function UserCenter() {
                         </div>
                     </Col>
                     <Col span={4}
-                        style={
-                            {
-                                maxHeight: '40px',
-                                display: 'flex',
-                                justifyContent: 'right',
-                            }
-                        }
+                         style={
+                             {
+                                 maxHeight: '40px',
+                                 display: 'flex',
+                                 justifyContent: 'right',
+                             }
+                         }
                     >
                         <div
                             style={
@@ -153,27 +150,27 @@ function UserCenter() {
                             }
                         >
                             <img src={online_img} alt=""
-                                style={
-                                    {
-                                        display: 'block',
-                                        height: '30px',
-                                        objectFit: 'cover',
-                                    }
-                                }
+                                 style={
+                                     {
+                                         display: 'block',
+                                         height: '30px',
+                                         objectFit: 'cover',
+                                     }
+                                 }
                             />
                         </div>
                     </Col>
                 </Row>
                 <Row justify='start' align='middle'
-                    style={
-                        {
-                            backgroundColor: 'lightgray',
-                            margin: '10px 0 0 0',
-                            padding: '0 10px 0 10px',
-                            height: '30px',
-                            borderRadius: '8px',
-                        }
-                    }
+                     style={
+                         {
+                             backgroundColor: 'lightgray',
+                             margin: '10px 0 0 0',
+                             padding: '0 10px 0 10px',
+                             height: '30px',
+                             borderRadius: '8px',
+                         }
+                     }
                 >
                     <Col span={6}>
                         {user.realName}
@@ -185,14 +182,14 @@ function UserCenter() {
             </Col>
 
             <Col span={4}
-                style={
-                    {
-                        height: '80px',
-                    }
-                }
+                 style={
+                     {
+                         height: '80px',
+                     }
+                 }
             >
                 <Row
-                    gutter={{ xs: 8, sm: 16, md: 24, }}
+                    gutter={{xs: 8, sm: 16, md: 24,}}
                 >
                     <Col
                         span={6}
@@ -208,18 +205,18 @@ function UserCenter() {
                         <$.Str>
                             金币数 {user_saving.coins}
                         </$.Str>
-                        <div style={{ height: '10px' }}></div>
+                        <div style={{height: '10px'}}></div>
                         <$.Str>
                             经验数 {user_saving.exps}
                         </$.Str>
                     </Col>
                     <Col span={6}
-                        style={
-                            {
-                                height: '80px',
-                                paddingTop: '50px'
-                            }
-                        }
+                         style={
+                             {
+                                 height: '80px',
+                                 paddingTop: '50px'
+                             }
+                         }
                     >
                         <button
                             style={
@@ -244,10 +241,10 @@ function UserCenter() {
         </Row>
 
         <Row
-            gutter={{ xs: 8, sm: 16, md: 24, }}
+            gutter={{xs: 8, sm: 16, md: 24,}}
         >
             <Col span={9}>
-                <UserAttach />
+                <UserAttach/>
             </Col>
         </Row>
 

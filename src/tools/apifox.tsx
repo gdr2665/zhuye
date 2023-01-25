@@ -100,6 +100,17 @@ export enum Role {
     User = "USER",
 }
 
+export interface UserLoginDTO {
+    /**
+     * 密码
+     */
+    password: string;
+    /**
+     * 用户名
+     */
+    username: string;
+}
+
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
 export class Convert {
@@ -109,6 +120,14 @@ export class Convert {
 
     public static questionDetailDTOToJson(value: QuestionDetailDTO): string {
         return JSON.stringify(uncast(value, r("QuestionDetailDTO")), null, 2);
+    }
+
+    public static toUserLoginDTO(json: string): UserLoginDTO {
+        return cast(JSON.parse(json), r("UserLoginDTO"));
+    }
+
+    public static userLoginDTOToJson(value: UserLoginDTO): string {
+        return JSON.stringify(uncast(value, r("UserLoginDTO")), null, 2);
     }
 }
 
@@ -263,6 +282,10 @@ const typeMap: any = {
         {json: "realName", js: "realName", typ: u(undefined, "")},
         {json: "role", js: "role", typ: u(undefined, r("Role"))},
         {json: "username", js: "username", typ: u(undefined, "")},
+    ], "any"),
+    "UserLoginDTO": o([
+        {json: "password", js: "password", typ: ""},
+        {json: "username", js: "username", typ: ""},
     ], "any"),
     "Language": [
         "C",
