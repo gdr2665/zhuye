@@ -2,8 +2,9 @@
 @import './tools/ace-n.less';
 
 // Color Definition
-@error: rgba(255, 78, 78, 0.88);
-@warning: rgba(255, 165, 0, 0.88);
+@error: #FF4E4EE0;
+@warning: #FFA500E0;
+@success: #2BA471E0;
 
 // Basics
 body {
@@ -184,4 +185,13 @@ body {
     padding-left: 0 !important;
     padding-top: 30px !important;
   }
+}
+
+// Problem
+.solved {
+  color: @success;
+}
+
+.not-solved {
+  color: @error;
 }

@@ -8,11 +8,11 @@ import Ask from "./pages/Ask";
 import React from "react";
 import Explore from "./pages/Explore";
 import Square from "./pages/Square";
-import User from "./pages/User";
 import Report from "./pages/Report";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Problem from "./pages/Problem";
+import UserCenter from './pages/UserCenter';
 
 function App() {
     const {Content, Footer, Aside} = Layout
@@ -28,7 +28,7 @@ function App() {
                     <MenuItem value="1" href={"/ask"}><ThinkingProblem/></MenuItem>
                     <MenuItem value="2" href={"/"}><Palace/></MenuItem>
                     <MenuItem value="3" href={"/explore"}><SignalTower/></MenuItem>
-                    <MenuItem value="3" href={"/problem"}>临时例子</MenuItem>
+                    <MenuItem value="10" href={"/problem"}>temp</MenuItem>
                     <Divider className={"leftDown"}></Divider>
                     <MenuItem value="4" href={logon ? "/user" : "/register"}><Me/></MenuItem>
                     <MenuItem value="5" href={"/report"}><MessageEmoji/></MenuItem>
@@ -41,11 +41,11 @@ function App() {
                             <Route path="/" element={<Square/>}/>
                             <Route path="ask" element={<Ask/>}/>
                             <Route path="explore" element={<Explore/>}/>
-                            <Route path="user" element={<User/>}/>
+                            <Route path="user" element={<UserCenter/>}/>
                             <Route path="report" element={<Report/>}/>
                             <Route path="login" element={<Login/>}/>
                             <Route path="register" element={<Register/>}/>
-                            <Route path="problem" element={<Problem/>}/>
+                            <Route path="problem/*" element={<Problem/>}/>
                         </Routes>
                     </BrowserRouter>
                 </Content>
