@@ -1,5 +1,6 @@
 import * as $ from "../tools/kit"
 import React, {useState} from "react";
+import axios from 'axios';
 import {Button, Cascader, Input, MessagePlugin, Space} from "tdesign-react";
 
 function Register() {
@@ -98,6 +99,23 @@ function Register() {
     const [password, setPassword] = useState('');
     const [rewritePassword, setRewritePassword] = useState('');
     const toRegister = (e: React.MouseEvent) => {
+        axios({
+            method:"get",
+            url:"https://mock.apifox.cn/m1/1898652-0-default/user/detail",
+        })
+        .post(
+           {
+
+                    'studentId':stuCode,
+                    'realName':name,
+                    'username':username,
+                    'password':password
+
+            }
+          ).then(res=>{
+            alert(res)
+          })
+        MessagePlugin.warning(stuCodeInputStatus+'');
         if (stuCodeInputStatus == undefined && usernameInputStatus == undefined) {
 
         } else {
