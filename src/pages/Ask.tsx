@@ -6,7 +6,7 @@ import * as $ from "../tools/kit"
 import React, {useEffect, useState} from "react"
 import {Button, Col, Input, MessagePlugin, Row, Select, SelectValue, Space, Textarea} from "tdesign-react"
 import AceEditor, {InterAnnotation, InterMarker, InterPos} from "../tools/aceEditor"
-import {Language, ProblemType, QuestionDetailDTO, Convert} from "../tools/apifox";
+import {Language, ProblemType, QuestionDetailDTO, Convert, Axios} from "../tools/apifox";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
@@ -97,12 +97,12 @@ function Ask() {
         toTempSave(e);
         var rconfig = {
             method: 'get',
-            url: 'http://127.0.0.1:8080/user/saving',
+            url: '/user/saving',
             headers: {
                 'User-Agent': 'Apifox/1.0.0 (https://www.apifox.cn)'
             }
         };
-        axios(rconfig)
+        Axios(rconfig)
             .then(function (rresponse) {
                 var coins: number = rresponse.data.coins;
                 var coinsEnough = true;
@@ -113,14 +113,14 @@ function Ask() {
                     var raw = Convert.questionDetailDTOToJson(data);
                     var config = {
                         method: 'post',
-                        url: 'http://127.0.0.1:8080/question',
+                        url: '/question',
                         headers: {
                             'User-Agent': 'Apifox/1.0.0 (https://www.apifox.cn)',
                             'Content-Type': 'application/json'
                         },
                         data: raw
                     };
-                    axios(config)
+                    Axios(config)
                         .then(function (response) {
                             let id: number = JSON.parse(response.data).id;
                             console.log(id);

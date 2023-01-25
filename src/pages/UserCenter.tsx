@@ -4,37 +4,22 @@ import {Divider, Row, Col, Dialog} from 'tdesign-react';
 import * as $ from "../tools/kit"
 import UserAttach from '../components/user_attach';
 import UpdateUserForm from '../components/update_user_info_form';
-
-
 import online_img from '../assets/online.png';
-
-interface User {
-    "id": number,
-    "username": string,
-    "realName": string,
-    "studentId": string,
-    "email": string,
-    "role": string,
-}
-
-interface User_saving {
-    "exps": number,
-    "coins": number
-}
+import {Axios, Role, UserDetailDTO, UserSavingDTO} from "../tools/apifox";
 
 function UserCenter() {
     const effectCalled = useRef(false);
 
-    const [user, set_user] = useState<User>({
+    const [user, set_user] = useState<UserDetailDTO>({
         "email": "",
         "realName": "",
-        "role": "",
+        "role": Role.User,
         "username": "",
         "studentId": "",
         "id": 0
     });
 
-    const [user_saving, set_user_saving] = useState<User_saving>({
+    const [user_saving, set_user_saving] = useState<UserSavingDTO>({
         "exps": 0,
         "coins": 0
     });
@@ -45,9 +30,13 @@ function UserCenter() {
         if (effectCalled.current) return;
 
         //获取用户信息
-        axios({
+        Axios({
             method: "get",
-            url: "https://mock.apifox.cn/m1/1898652-0-default/user/detail",
+            url: "/user/detail",
+            headers: {
+                'User-Agent': 'Apifox/1.0.0 (https://www.apifox.cn)',
+                'Content-Type': 'application/json',
+            }
         })
             .then(function (response) {
                 //handle success
@@ -60,9 +49,13 @@ function UserCenter() {
             });
 
         //获取用户积分金币
-        axios({
+        Axios({
             method: "get",
-            url: "https://mock.apifox.cn/m1/1898652-0-default/user/saving",
+            url: "/user/saving",
+            headers: {
+                'User-Agent': 'Apifox/1.0.0 (https://www.apifox.cn)',
+                'Content-Type': 'application/json',
+            }
         })
             .then(function (response) {
                 //handle success

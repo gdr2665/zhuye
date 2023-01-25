@@ -7,6 +7,12 @@
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
+import axios from "axios";
+
+export const Axios = axios.create({
+    baseURL: "https://tc.yxzl.top"
+})
+
 /**
  * QuestionDetailDTO，提问详细信息
  */
@@ -91,6 +97,33 @@ export interface UserBriefInfoDTO {
     username?: string;
 }
 
+export interface UserDetailDTO {
+    /**
+     * 邮箱
+     */
+    email: string;
+    /**
+     * ID
+     */
+    id?: number;
+    /**
+     * 真实姓名
+     */
+    realName: string;
+    /**
+     * 角色
+     */
+    role: Role;
+    /**
+     * 学号
+     */
+    studentId?: null | string;
+    /**
+     * 用户名
+     */
+    username: string;
+}
+
 /**
  * 角色
  */
@@ -111,6 +144,17 @@ export interface UserLoginDTO {
     username: string;
 }
 
+export interface UserSavingDTO {
+    /**
+     * 金币数
+     */
+    coins?: number;
+    /**
+     * 经验数
+     */
+    exps?: number;
+}
+
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
 export class Convert {
@@ -128,6 +172,22 @@ export class Convert {
 
     public static userLoginDTOToJson(value: UserLoginDTO): string {
         return JSON.stringify(uncast(value, r("UserLoginDTO")), null, 2);
+    }
+
+    public static toUserDetailDTO(json: string): UserDetailDTO {
+        return cast(JSON.parse(json), r("UserDetailDTO"));
+    }
+
+    public static userDetailDTOToJson(value: UserDetailDTO): string {
+        return JSON.stringify(uncast(value, r("UserDetailDTO")), null, 2);
+    }
+
+    public static toUserSavingDTO(json: string): UserSavingDTO {
+        return cast(JSON.parse(json), r("UserSavingDTO"));
+    }
+
+    public static userSavingDTOToJson(value: UserSavingDTO): string {
+        return JSON.stringify(uncast(value, r("UserSavingDTO")), null, 2);
     }
 }
 

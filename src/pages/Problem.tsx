@@ -2,7 +2,7 @@ import Asked from "../components/asked";
 import Answered from "../components/answered";
 import {MessagePlugin, Tabs} from "tdesign-react";
 import axios from "axios";
-import {Convert, Language, ProblemType, QuestionDetailDTO} from "../tools/apifox";
+import {Axios, Convert, Language, ProblemType, QuestionDetailDTO} from "../tools/apifox";
 import * as $ from "../tools/kit";
 
 let pFetched = false;
@@ -44,9 +44,9 @@ int main()
     };
     if (!pFetched) {
         pFetched = true;
-        axios({
+        Axios({
             method: 'get',
-            url: 'http://127.0.0.1:8080/question/' + id.toString(),
+            url: '/question/' + id.toString(),
             headers: {
                 'User-Agent': 'Apifox/1.0.0 (https://www.apifox.cn)'
             }

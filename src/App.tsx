@@ -19,7 +19,7 @@ function App() {
     const {MenuItem} = Menu
     const Logo = () => <img width="24" src={logo} alt="logo"
                             style={{marginLeft: 25}}/>
-    let logon = false;
+    let logon = localStorage.getItem("logon") == String(true);
 
     return (
         <Layout>

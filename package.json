@@ -15,7 +15,7 @@
     "react-ace": "^10.1.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.3",
-    "tdesign-react": "^0.42.6"
+    "tdesign-react": "^0.45.4"
   },
   "devDependencies": {
     "@types/react": "^18.0.24",
