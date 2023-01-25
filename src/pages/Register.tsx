@@ -2,7 +2,7 @@ import * as $ from "../tools/kit"
 import React, {useState} from "react";
 import {Button, Cascader, Input, MessagePlugin, Space} from "tdesign-react";
 
-function Register() {
+const Register = () => {
     const [stuCode, setStuCode] = useState('');
     const stuCodeReg = /^[1-9]\d{9}$/g;
     const stuCodeInputStatus = stuCode == "" ? undefined : !stuCodeReg.test(stuCode) ? 'error' : undefined;

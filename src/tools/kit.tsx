@@ -208,11 +208,19 @@ export function MessageEmoji() {
 }
 
 export function upperToCapital(upper: string): string {
-    var upArr = upper.split("");
-    var capArr: Array<String> = [];
-    for (var _i = 0; _i < upArr.length; _i++) {
+    let upArr = upper.split("");
+    let capArr: Array<String> = [];
+    for (let _i = 0; _i < upArr.length; _i++) {
         if (_i == 0 || upArr[_i - 1] == "_") capArr.push(upArr[_i].toUpperCase());
         else capArr.push(upArr[_i].toLowerCase());
     }
     return capArr.join("");
+}
+
+export function redirect(to: string) {
+    let url = window.location.href;
+    if (url.endsWith("/")) url = url.slice(0, -1)
+    let urlSplit = url.split('/');
+    url = urlSplit[0] + "//" + urlSplit[2] + to;
+    window.location.replace(url);
 }

@@ -1,40 +1,24 @@
-import {useRef, useEffect, useState} from 'react';
-import axios from 'axios';
-import {Divider, Row, Col, Dialog} from 'tdesign-react';
+import React, {useEffect, useRef, useState} from 'react';
+import {Col, Dialog, Row} from 'tdesign-react';
 import * as $ from "../tools/kit"
 import UserAttach from '../components/user_attach';
 import UpdateUserForm from '../components/update_user_info_form';
-
-
 import online_img from '../assets/online.png';
+import {Axios, Role, UserDetailDTO, UserSavingDTO} from "../tools/apifox";
 
-interface User {
-    "id": number,
-    "username": string,
-    "realName": string,
-    "studentId": string,
-    "email": string,
-    "role": string,
-}
-
-interface User_saving {
-    "exps": number,
-    "coins": number
-}
-
-function UserCenter() {
+const UserCenter = () => {
     const effectCalled = useRef(false);
 
-    const [user, set_user] = useState<User>({
+    const [user, set_user] = useState<UserDetailDTO>({
         "email": "",
         "realName": "",
-        "role": "",
+        "role": Role.User,
         "username": "",
         "studentId": "",
         "id": 0
     });
 
-    const [user_saving, set_user_saving] = useState<User_saving>({
+    const [user_saving, set_user_saving] = useState<UserSavingDTO>({
         "exps": 0,
         "coins": 0
     });
@@ -43,11 +27,12 @@ function UserCenter() {
 
     useEffect(() => {
         if (effectCalled.current) return;
-
         //获取用户信息
-        axios({
-            method: "get",
-            url: "https://mock.apifox.cn/m1/1898652-0-default/user/detail",
+        Axios.get("/user/detail", {
+            headers: {
+                'User-Agent': 'Apifox/1.0.0 (https://www.apifox.cn)',
+                'Content-Type': 'application/json',
+            }
         })
             .then(function (response) {
                 //handle success
@@ -60,9 +45,11 @@ function UserCenter() {
             });
 
         //获取用户积分金币
-        axios({
-            method: "get",
-            url: "https://mock.apifox.cn/m1/1898652-0-default/user/saving",
+        Axios.get("/user/saving", {
+            headers: {
+                'User-Agent': 'Apifox/1.0.0 (https://www.apifox.cn)',
+                'Content-Type': 'application/json',
+            }
         })
             .then(function (response) {
                 //handle success
@@ -79,13 +66,9 @@ function UserCenter() {
 
 
     return <$.BackBox>
-        <h1>用户中心</h1>
-        <Divider></Divider>
-
-        {/*用户基本信息*/}
-        <Row
-            gutter={{xs: 8, sm: 16, md: 24,}}
-        >
+        <$.LargeTitle>用户中心</$.LargeTitle>
+        {/* 用户基本信息 */}
+        <Row gutter={{xs: 8, sm: 16, md: 24,}}>
             <Col span={5}>
                 <Row
 

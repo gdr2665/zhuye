@@ -2,7 +2,7 @@ import * as $ from "../tools/kit"
 import React, {useState} from "react";
 import {Button, MessagePlugin, Space, Textarea} from "tdesign-react";
 
-function Report() {
+const Report = () => {
     const [content, setContent] = useState('');
     const toSubmit = (e: React.MouseEvent) => {
         if (content != "") {

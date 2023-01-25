@@ -1,20 +1,11 @@
 import React from 'react';
 import {Form, Input, Button, MessagePlugin, FormRule} from 'tdesign-react';
 import axios from 'axios';
-import User from '../pages/User';
+import {UserDetailDTO} from "../tools/apifox";
 
 const {FormItem} = Form;
 
-interface User {
-    "id": number,
-    "username": string,
-    "realName": string,
-    "studentId": string,
-    "email": string,
-    "role": string,
-}
-
-export default function UpdateUserForm(props: { user: User, set_user: any }) {
+export default function UpdateUserForm(props: { user: UserDetailDTO, set_user: any }) {
     const form_ref = React.createRef();
 
     const [form] = Form.useForm();
@@ -64,9 +55,9 @@ export default function UpdateUserForm(props: { user: User, set_user: any }) {
     function passwordValidator(val: string) {
         const reg = /^\w+((.\w+)|(-\w+))@[A-Za-z0-9]+((.|-)[A-Za-z0-9]+).[A-Za-z0-9]+$/;
         if (!reg.test(val)) { //正则验证不通过，格式不对
-            return {result: false, message: '邮箱格式不正确', type: 'error'};
+            return {result: false, message: '邮箱格式不正确', type: 'error' as ('error' | 'warning' | 'success')};
         }
-        return {result: true, message: 'Ok', type: 'success'};
+        return {result: true, message: 'Ok', type: 'success' as ('error' | 'warning' | 'success')};
     }
 
     const rules: { [x: string]: FormRule[]; } = {
@@ -76,9 +67,8 @@ export default function UpdateUserForm(props: { user: User, set_user: any }) {
         ],
         email: [
             {required: true, message: '必填', type: 'error'},
-            // {validator: passwordValidator},
+            {validator: passwordValidator},
         ],
-
     };
 
     return (
