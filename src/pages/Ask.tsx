@@ -3,18 +3,17 @@
 
 // import ... from 可以引用我这个页面用到了的别的包
 import * as $ from "../tools/kit"
-import React, {useEffect, useState} from "react"
+import React, {useState} from "react"
 import {Button, Col, Input, MessagePlugin, Row, Select, SelectValue, Space, Textarea} from "tdesign-react"
 import AceEditor, {InterAnnotation, InterMarker, InterPos} from "../tools/aceEditor"
-import {Language, ProblemType, QuestionDetailDTO, Convert, Axios} from "../tools/apifox";
+import {Axios, Convert, Language, ProblemType, QuestionDetailDTO} from "../tools/apifox";
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
 
 function Ask() {
     // Form Set
     // useState 表示一个值，用前者访问这个值，后者修改这个值
     let strSaved = localStorage.getItem("questionToBeAsked");
-    var saved = {code: "", reward: "", language: "JAVA", description: "", title: ""};
+    let saved = {code: "", reward: "", language: "JAVA", description: "", title: ""};
     if (strSaved != null) {
         saved = JSON.parse(strSaved);
     }
@@ -89,29 +88,26 @@ function Ask() {
         };
         localStorage.setItem("questionToBeAsked", Convert.questionDetailDTOToJson(data));
     }
-    const toTempSaveAndResponse = (e: React.MouseEvent) => {
+    const toTempSaveAndResponse = async (e: React.MouseEvent) => {
         toTempSave(e);
-        MessagePlugin.success('当前提问数据在本地保存成功。');
+        await MessagePlugin.success('当前提问数据在本地保存成功。');
     }
     const toSubmit = (e: React.MouseEvent) => {
         toTempSave(e);
-        var rconfig = {
-            method: 'get',
-            url: '/user/saving',
+        Axios.get('/user/saving', {
             headers: {
                 'User-Agent': 'Apifox/1.0.0 (https://www.apifox.cn)'
             }
-        };
-        Axios(rconfig)
-            .then(function (rresponse) {
-                var coins: number = rresponse.data.coins;
-                var coinsEnough = true;
+        })
+            .then(async (rresponse) => {
+                let coins: number = rresponse.data.coins;
+                let coinsEnough = true;
                 if (data.reward != null) {
                     if (coins < data.reward) coinsEnough = false;
                 }
                 if (coinsEnough) {
-                    var raw = Convert.questionDetailDTOToJson(data);
-                    var config = {
+                    let raw = Convert.questionDetailDTOToJson(data);
+                    let config = {
                         method: 'post',
                         url: '/question',
                         headers: {
@@ -129,17 +125,17 @@ function Ask() {
                             // TODO: 悬赏从用户的金币里扣除（API暂无）
                             navigate("/");
                         })
-                        .catch(function (error) {
+                        .catch(async function (error) {
                             console.log('error', error);
-                            MessagePlugin.error('提问失败：' + error);
+                            await MessagePlugin.error('提问失败：' + error);
                         });
                 } else {
-                    MessagePlugin.error('提问失败，当前金币数量小于设定的悬赏额');
+                    await MessagePlugin.error('提问失败，当前金币数量小于设定的悬赏额');
                 }
             })
-            .catch(function (rerror) {
+            .catch(async function (rerror) {
                 console.log(rerror);
-                MessagePlugin.error('提问失败：' + rerror);
+                await MessagePlugin.error('提问失败：' + rerror);
             });
 
     }

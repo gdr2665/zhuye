@@ -1,11 +1,10 @@
 import * as $ from "../tools/kit"
+import {redirect} from "../tools/kit"
 import React, {useState} from "react";
 import {Button, Input, MessagePlugin, Space} from "tdesign-react";
 import {Axios, Convert, UserLoginDTO} from "../tools/apifox";
-import {useNavigate} from "react-router-dom";
 
-function Login() {
-    let navigate = useNavigate();
+const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const toLogin = (e: React.MouseEvent) => {
@@ -29,7 +28,7 @@ function Login() {
                     MessagePlugin.success('登录成功！');
                     console.log(JSON.stringify(response.data));
                     localStorage.setItem("logon", String(true));
-                    navigate("/");
+                    redirect("/");
                 })
                 .catch(function (error: any) {
                     MessagePlugin.error('登录失败！');

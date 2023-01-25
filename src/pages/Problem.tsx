@@ -1,13 +1,12 @@
 import Asked from "../components/asked";
 import Answered from "../components/answered";
 import {MessagePlugin, Tabs} from "tdesign-react";
-import axios from "axios";
 import {Axios, Convert, Language, ProblemType, QuestionDetailDTO} from "../tools/apifox";
 import * as $ from "../tools/kit";
 
 let pFetched = false;
 
-function Problem() {
+const Problem = () => {
     const {TabPanel} = Tabs
     let codeExample = `#include<stdio.h>
 #include<math.h>
@@ -33,7 +32,7 @@ int main()
 
     let locationSplit = window.location.href.split("/");
     let idStr = locationSplit[locationSplit.length - 1];
-    if (idStr == "problem") idStr = "0";
+    if (idStr == "problem") idStr = "1";
     let id = parseInt(idStr);
     let data: QuestionDetailDTO = {
         code: codeExample,
