@@ -3,7 +3,7 @@ import './App.less'
 import logo from './assets/logo-compact.png'
 import * as $ from './tools/kit'
 import { Me, MessageEmoji, Palace, SignalTower, ThinkingProblem } from './tools/kit'
-import { BrowserRouter, Route, Routes, redirect } from 'react-router-dom'
+import { BrowserRouter, redirect, Route, Routes } from 'react-router-dom'
 import Ask from './pages/Ask'
 import React from 'react'
 import Explore from './pages/Explore'
@@ -15,6 +15,7 @@ import Problem from './pages/Problem'
 import UserCenter from './pages/UserCenter'
 import SubMenu from 'tdesign-react/es/menu/SubMenu'
 import { Axios } from './tools/api'
+import { setLogout, useAppDispatch, useAppSelector } from './tools/slices'
 
 const App: React.FC = () => {
   const {
@@ -23,16 +24,12 @@ const App: React.FC = () => {
     Aside
   } = Layout
   const { MenuItem } = Menu
-  const logon = localStorage.getItem('logon') == String(true)
-  const logout = async () => {
-    await Axios.get('/user/logout', {
-      headers: {
-        'User-Agent': 'Apifox/1.0.0 (https://www.apifox.cn)',
-        'Content-Type': 'application/json'
-      }
-    })
-    localStorage.setItem('logon', String(false))
-    await MessagePlugin.success('登出成功！')
+  const dispatch = useAppDispatch()
+  const logon = useAppSelector((state) => state.user.logon)
+  const logout = () => {
+    void Axios.get('/user/logout')
+    dispatch(setLogout())
+    void MessagePlugin.success('登出成功！')
     redirect('/')
   }
 
@@ -49,7 +46,7 @@ const App: React.FC = () => {
           <MenuItem value="1" href={'/ask'}><ThinkingProblem/></MenuItem>
           <MenuItem value="2" href={'/'}><Palace/></MenuItem>
           <MenuItem value="3" href={'/explore'}><SignalTower/></MenuItem>
-          <MenuItem value="10" href={'/problem'}>temp</MenuItem>
+          <MenuItem value="10" href={'/problem/1'}>temp</MenuItem>
           <Divider className={'leftDown'}></Divider>
           <SubMenu value="4" icon={<Me/>}>
             <MenuItem value="4-1" href={logon ? '/user' : '/login'}>{logon ? '用户中心' : '登录'}</MenuItem>

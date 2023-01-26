@@ -113,7 +113,6 @@ const Register: React.FC = () => {
       <FormItem label="学号" name={['stuCode']} rules={[{ required: true }]}>
         <Input placeholder="请输入10位学号（激励机制认证用）"/>
       </FormItem>
-
       <Cascader
         lazy
         loading={false}

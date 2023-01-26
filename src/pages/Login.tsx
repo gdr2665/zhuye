@@ -4,10 +4,12 @@ import { Button, Input, MessagePlugin, Space } from 'tdesign-react'
 import { Axios, type DataMessageResponse, type UserLoginDTO } from '../tools/api'
 import { type AxiosResponse } from 'axios'
 import { redirect } from 'react-router-dom'
+import { setLogin, useAppDispatch } from '../tools/slices'
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const dispatch = useAppDispatch()
   const toLogin = async () => {
     if (username === '' || password === '') {
       await MessagePlugin.warning('用户名、密码不能为空')
@@ -20,7 +22,7 @@ const Login: React.FC = () => {
     Axios.post('/user/login', data)
       .then(async (response: AxiosResponse<DataMessageResponse>) => {
         console.log(response.data)
-        localStorage.setItem('logon', String(true))
+        dispatch(setLogin())
         await MessagePlugin.success('登录成功！')
         redirect('/')
       })
