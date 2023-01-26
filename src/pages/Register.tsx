@@ -1,6 +1,6 @@
 import * as $ from '../tools/kit'
 import React, { useState } from 'react'
-import { Form, Button, Cascader, Input, MessagePlugin, Space } from 'tdesign-react'
+import { Button, Cascader, Form, Input, MessagePlugin, Space } from 'tdesign-react'
 
 const {
   FormItem
@@ -8,10 +8,9 @@ const {
 
 const Register: React.FC = () => {
   const [form] = Form.useForm()
-  const [stuCode, setStuCode] = useState('')
+  const [stuCode] = useState('')
   const stuCodeReg = /^[1-9]\d{9}$/g
   const stuCodeInputStatus = stuCode === '' ? undefined : !stuCodeReg.test(stuCode) ? 'error' : undefined
-  const stuCodeTips = stuCodeInputStatus ? '请输入10位学号' : ''
   const comeFrom = [
     {
       children: [
@@ -98,15 +97,13 @@ const Register: React.FC = () => {
   ]
   const [name, setName] = useState('')
   const [username, setUsername] = useState('')
-  const usernameInputStatus = username == '' ? undefined : username == 'admin' ? 'error' : undefined
-  const usernameTips = usernameInputStatus ? '这个用户名已被占用' : ''
+  const usernameInputStatus = username === '' ? undefined : username === 'admin' ? 'error' : undefined
+  const usernameTips = usernameInputStatus !== undefined ? '这个用户名已被占用' : ''
   const [password, setPassword] = useState('')
   const [rewritePassword, setRewritePassword] = useState('')
   const toRegister = (e: React.MouseEvent) => {
-    if (stuCodeInputStatus == undefined && usernameInputStatus == undefined) {
-
-    } else {
-      MessagePlugin.warning('请检查填写是否有误')
+    if (!(stuCodeInputStatus === undefined && usernameInputStatus === undefined)) {
+      void MessagePlugin.warning('请检查填写是否有误')
     }
   }
 

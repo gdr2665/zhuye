@@ -7,7 +7,7 @@
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-import axios, { AxiosResponse, AxiosError } from 'axios'
+import axios, { type AxiosError, type AxiosResponse } from 'axios'
 import { MessagePlugin } from 'tdesign-react'
 
 export const Axios = axios.create({
@@ -17,14 +17,15 @@ export const Axios = axios.create({
 Axios.interceptors.response.use((response: AxiosResponse) => response,
   async (error: AxiosError<InvalidFieldsResponse | InvalidMessageResponse>) => {
     if (!error.response) {
-      return Promise.reject(error.message)
+      return await Promise.reject(error.message)
     }
     const errData = error.response.data
     if ('message' in errData) {
       await MessagePlugin.error(errData.message ?? error.message)
-      return Promise.reject(errData as InvalidMessageResponse)
+      return await Promise.reject(errData)
     }
-    return Promise.reject(errData as InvalidFieldsResponse)
+    // eslint-disable-next-line
+    return await Promise.reject(errData as InvalidFieldsResponse)
   })
 
 /**
@@ -34,40 +35,40 @@ export interface QuestionDetailDTO {
   /**
    * 代码
    */
-  code: string;
+  code: string
   /**
    * 提问创建时间
    */
-  createTime?: Date;
+  createTime?: Date
   /**
    * 描述
    */
-  description: string;
+  description: string
   /**
    * ID
    */
-  id?: number;
+  id?: number
   /**
    * 语言
    */
-  language: Language;
+  language: Language
   /**
    * 问题类型
    */
-  problemType: ProblemType;
+  problemType: ProblemType
   /**
    * 悬赏，不设置为null
    */
-  reward?: number | null;
+  reward?: number | null
   /**
    * 是否已解决
    */
-  solved?: boolean;
+  solved?: boolean
   /**
    * 标题
    */
-  title: string;
-  user?: UserBriefInfoDTO;
+  title: string
+  user?: UserBriefInfoDTO
 }
 
 /**
@@ -96,46 +97,46 @@ export interface UserBriefInfoDTO {
   /**
    * ID
    */
-  id?: number;
+  id?: number
   /**
    * 真实姓名
    */
-  realName?: string;
+  realName?: string
   /**
    * 角色
    */
-  role?: Role;
+  role?: Role
   /**
    * 用户名
    */
-  username?: string;
+  username?: string
 }
 
 export interface UserDetailDTO {
   /**
    * 邮箱
    */
-  email: string;
+  email: string
   /**
    * ID
    */
-  id?: number;
+  id?: number
   /**
    * 真实姓名
    */
-  realName: string;
+  realName: string
   /**
    * 角色
    */
-  role: Role;
+  role: Role
   /**
    * 学号
    */
-  studentId?: null | string;
+  studentId?: null | string
   /**
    * 用户名
    */
-  username: string;
+  username: string
 }
 
 /**
@@ -151,52 +152,52 @@ export interface UserLoginDTO {
   /**
    * 密码
    */
-  password: string;
+  password: string
   /**
    * 用户名
    */
-  username: string;
+  username: string
 }
 
 export interface UserSavingDTO {
   /**
    * 金币数
    */
-  coins?: number;
+  coins?: number
   /**
    * 经验数
    */
-  exps?: number;
+  exps?: number
 }
 
 export interface DataIdResponse {
   /**
    * 数据ID
    */
-  id: number;
+  id: number
 }
 
 export interface DataMessageResponse {
   /**
    * 响应字符串
    */
-  data?: string;
+  data?: string
 }
 
 export interface InvalidMessageResponse {
   /**
    * 响应文本
    */
-  message?: string;
+  message?: string
 }
 
 export interface InvalidFieldsResponse {
   /**
    * 非法字段数量
    */
-  count?: number;
+  count?: number
   /**
    * 字段名及对应的错误提示
    */
-  invalidFields?: { [key: string]: string };
+  invalidFields?: Record<string, string>
 }
