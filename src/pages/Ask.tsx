@@ -10,6 +10,7 @@ import { Axios, type DataIdResponse, type Language } from '@/tools/api'
 import { type AxiosResponse } from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { LanguageMapping } from '@/tools/const'
+import { setQuestionToAsk, useAppDispatch, useAppSelector } from '@/tools/slices'
 
 interface Saved {
   title: string,
@@ -52,29 +53,22 @@ const Ask: React.FC = () => {
   // ( ... ) => { ... } 是一种将函数调用过程用于给变量赋值等用途时简写的标记
   // 以下两个 const 用于操作新建代码中的高亮标记，具体实现方式可以自己研究下，不过也可以略过
   // InterMarker，InterAnnotation 等是在项目内别的文件中手动定义的类型
-
   // Form Submit
   // 这几个是提交问题时用的函数以及变量
   const navigate = useNavigate()
-  let data: QuestionDetailDTO = {
-    code: '',
-    title: '',
-    language: 'C',
-    description: '',
-    problemType: 'OTHER'
-  }
+  const dispatch = useAppDispatch()
+  const questionData = useAppSelector((state) => state.questionToAsk)
   const toTempSave = () => {
     let rewardInt: number | null = null
     if (reward !== '') rewardInt = parseInt(reward)
-    data = {
+    dispatch(setQuestionToAsk({
       code: editor.current.getCode(),
       title,
       language: lang,
       description: content,
       problemType: 'OTHER',
       reward: rewardInt
-    }
-    localStorage.setItem('questionToBeAsked', JSON.stringify(data))
+    }))
   }
   const toTempSaveAndResponse = () => {
     toTempSave()
@@ -82,7 +76,7 @@ const Ask: React.FC = () => {
   }
   const toSubmit = () => {
     toTempSave()
-    Axios.post('/question', data)
+    Axios.post('/question', questionData)
       .then(async (response: AxiosResponse<DataIdResponse>) => {
         const id: number = response.data.id
         console.log(id)

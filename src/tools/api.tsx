@@ -149,6 +149,29 @@ export interface UserLoginDTO {
   username: string
 }
 
+export interface UserRegisterDTO {
+  /**
+   * 邮箱
+   */
+  email: string;
+  /**
+   * 密码
+   */
+  password: string;
+  /**
+   * 真实姓名
+   */
+  realName: string;
+  /**
+   * 学号
+   */
+  studentId?: null | string;
+  /**
+   * 用户名
+   */
+  username: string;
+}
+
 export interface UserSavingDTO {
   /**
    * 金币数

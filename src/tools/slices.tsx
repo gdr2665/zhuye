@@ -1,8 +1,17 @@
 import { combineReducers, configureStore, createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import { type TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import { persistReducer, persistStore } from 'redux-persist'
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import { Role, type UserDetailDTO, type UserSavingDTO } from './api'
+import { Role, type UserDetailDTO, type UserSavingDTO, type QuestionDetailDTO, type Language, type ProblemType } from './api'
 
 export interface UserState {
   logon: boolean
@@ -43,19 +52,36 @@ const userSlice = createSlice({
   }
 })
 
+const questionToAskSlice = createSlice({
+  name: 'questionToAsk',
+  initialState: {
+    code: '',
+    title: '',
+    language: 'C' as Language,
+    description: '',
+    problemType: 'OTHERS' as ProblemType
+  },
+  reducers: {
+    setQuestionToAsk (state: QuestionDetailDTO, action: PayloadAction<QuestionDetailDTO>) {
+      state = action.payload
+    }
+  }
+})
+
 export const { setLogin, setLogout, setUserDetail, setUserSaving } = userSlice.actions
 export const userReducer = userSlice.reducer
+export const { setQuestionToAsk } = questionToAskSlice.actions
+export const questionToAskReducer = questionToAskSlice.reducer
 const rootReducer = combineReducers({
-  user: userReducer
+  user: userReducer,
+  questionToAsk: questionToAskReducer
 })
 const rootPersistConfig = {
   key: 'root',
   storage
 }
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer)
-export const store = configureStore({
-  reducer: persistedReducer
-})
+export const store = configureStore({ reducer: persistedReducer, middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: { ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER], }, }), });
 export const persistor = persistStore(store)
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch

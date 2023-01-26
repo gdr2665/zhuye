@@ -10,7 +10,7 @@ export default function UpdateUserForm (props: { user: UserDetailDTO, setUser: a
 
   const [form] = Form.useForm()
 
-  const realname = Form.useWatch('realname', form)
+  const realName = Form.useWatch('realName', form)
   const email = Form.useWatch('email', form)
 
   const onSubmit = (e: any) => {
@@ -19,7 +19,7 @@ export default function UpdateUserForm (props: { user: UserDetailDTO, setUser: a
       // 获取用户积分金币
 
       const userCopy = JSON.parse(JSON.stringify(props.user))
-      userCopy.realName = realname
+      userCopy.realName = realName
       userCopy.email = email
       console.log(userCopy)
       axios({
@@ -73,7 +73,7 @@ export default function UpdateUserForm (props: { user: UserDetailDTO, setUser: a
   return (
         <Form ref={formRef} form={form} statusIcon={true} onSubmit={onSubmit} onReset={onReset} labelWidth={100}
               rules={rules}>
-            <FormItem label="真实姓名" name="realname" initialData={props.user.realName}>
+            <FormItem label="真实姓名" name="realName" initialData={props.user.realName}>
                 <Input/>
             </FormItem>
             <FormItem label="邮箱" name="email" initialData={props.user.email}>

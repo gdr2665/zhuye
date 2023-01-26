@@ -10,6 +10,8 @@ const Login: React.FC = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const dispatch = useAppDispatch()
+  const { state } = useLocation()
+  const navigate = useNavigate()
   const toLogin = async () => {
     if (username === '' || password === '') {
       await MessagePlugin.warning('用户名、密码不能为空')
@@ -24,7 +26,7 @@ const Login: React.FC = () => {
         console.log(response.data)
         dispatch(setLogin())
         await MessagePlugin.success('登录成功！')
-        redirect('/')
+        navigate('/')
       })
       .catch(err => err)
   }
@@ -53,7 +55,9 @@ const Login: React.FC = () => {
       />
       <Space>
         <Button onClick={toLogin}>登录</Button>
-        <Button theme="default" href={'/register'}>注册</Button>
+        <Button theme="default">
+          <NavLink to={'/register'}>注册</NavLink>
+        </Button>
       </Space>
     </Space>
   </$.SmallerBackBox>

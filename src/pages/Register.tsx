@@ -79,41 +79,36 @@ const Register: React.FC = () => {
       <FormItem name={['stuCode']}>
         <Input placeholder="请输入10位学号（激励机制认证用）"/>
       </FormItem>
-      <Cascader
-        lazy
-        loading={false}
-        options={comeFrom}
-        placeholder={'请选择你的组织（激励机制认证用）'}
-        showAllLevels
-      />
-      <Input
-        value={name}
-        onChange={setName}
-        placeholder="请输入姓名（激励机制认证用）"
-      />
-      <Input
-        value={username}
-        onChange={setUsername}
-        status={usernameInputStatus}
-        tips={usernameTips}
-        placeholder="请输入用户名（登录用的账号名）"
-      />
-      <Input
-        type={'password'}
-        value={password}
-        onChange={setPassword}
-        placeholder="请输入密码"
-      />
-      <Input
-        type={'password'}
-        value={rewritePassword}
-        onChange={setRewritePassword}
-        placeholder="请重新输入密码"
-      />
-      <Space>
-        <Button onClick={toRegister}> 注册</Button>
-        <Button theme="default" href={'/login'}>登录</Button>
-      </Space>
+      <FormItem name={['comeFrom']}>
+        <Cascader
+          lazy
+          loading={false}
+          options={comeFrom}
+          placeholder={'请选择你的组织（激励机制认证用）'}
+          showAllLevels
+        />
+      </FormItem>
+      <FormItem name={['name']}>
+        <Input placeholder="请输入姓名（激励机制认证用）"/>
+      </FormItem>
+      <FormItem name={['username']}>
+        <Input placeholder="请输入用户名（登录用的账号名）"/>
+      </FormItem>
+      <FormItem name={['email']}>
+        <Input placeholder="请输入邮箱"/>
+      </FormItem>
+      <FormItem name={['password']}>
+        <Input type="password" placeholder="请输入密码"/>
+      </FormItem>
+      <FormItem name={['rewritePassword']}>
+        <Input type="password" placeholder="请重新输入密码"/>
+      </FormItem>
+      <FormItem>
+        <Button type="submit" block>注册</Button>
+        <Button theme="default">
+          <NavLink to={'/login'}>登录</NavLink>
+        </Button>
+      </FormItem>
     </Form>
   </$.SmallerBackBox>
 }
