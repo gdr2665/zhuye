@@ -11,21 +11,20 @@ import axios, { type AxiosError, type AxiosResponse } from 'axios'
 import { MessagePlugin } from 'tdesign-react'
 
 export const Axios = axios.create({
-  baseURL: 'https://tc.yxzl.top'
+  baseURL: 'https://tc.yxzl.top/api'
 })
 
 Axios.interceptors.response.use((response: AxiosResponse) => response,
   async (error: AxiosError<InvalidFieldsResponse | InvalidMessageResponse>) => {
     if (!error.response) {
-      return await Promise.reject(error.message)
+      throw error.message
     }
     const errData = error.response.data
     if ('message' in errData) {
       await MessagePlugin.error(errData.message ?? error.message)
-      return await Promise.reject(errData)
+      throw errData
     }
-    // eslint-disable-next-line
-    return await Promise.reject(errData as InvalidFieldsResponse)
+    throw errData as InvalidFieldsResponse
   })
 
 /**
