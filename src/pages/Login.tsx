@@ -7,7 +7,7 @@ import {Axios, Convert, UserLoginDTO} from "../tools/apifox";
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const toLogin = (e: React.MouseEvent) => {
+    const toLogin = async (_: React.MouseEvent) => {
         if (username != "" && password != "") {
             let uld: UserLoginDTO = {
                 username: username,
@@ -24,19 +24,18 @@ const Login = () => {
                 data: data
             };
             Axios(config)
-                .then(function (response: { data: any; }) {
+                .then((response: { data: any; }) => {
                     MessagePlugin.success('登录成功！');
                     console.log(JSON.stringify(response.data));
                     localStorage.setItem("logon", String(true));
                     redirect("/");
                 })
-                .catch(function (error: any) {
-                    MessagePlugin.error('登录失败！');
+                .catch(async (error: any) => {
+                    await MessagePlugin.error('登录失败！');
                     console.log(error);
                 });
-
         } else {
-            MessagePlugin.warning('用户名、密码不能为空');
+            await MessagePlugin.warning('用户名、密码不能为空');
         }
     }
 
