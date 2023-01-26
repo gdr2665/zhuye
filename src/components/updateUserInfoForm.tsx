@@ -1,7 +1,7 @@
 import React from 'react';
 import {Form, Input, Button, MessagePlugin, FormRule} from 'tdesign-react';
 import axios from 'axios';
-import {UserDetailDTO} from "../tools/apifox";
+import {UserDetailDTO} from "../tools/api";
 
 const {FormItem} = Form;
 
