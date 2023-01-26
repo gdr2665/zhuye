@@ -1,4 +1,4 @@
-import * as $ from '../tools/kit'
+import * as $ from '@/tools/kit'
 import React from 'react'
 
 const Square: React.FC = () => {

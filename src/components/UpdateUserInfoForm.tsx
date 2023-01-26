@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Form, type FormRule, Input, MessagePlugin } from 'tdesign-react'
 import axios from 'axios'
-import { type UserDetailDTO } from '../tools/api'
+import { type UserDetailDTO } from '@/tools/api'
 
 const { FormItem } = Form
 

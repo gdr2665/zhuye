@@ -1,4 +1,4 @@
-import * as $ from '../tools/kit'
+import * as $ from '@/tools/kit'
 import React, { useState } from 'react'
 import { Button, MessagePlugin, Space, Textarea } from 'tdesign-react'
 

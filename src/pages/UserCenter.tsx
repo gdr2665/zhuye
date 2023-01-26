@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Col, Dialog, Row } from 'tdesign-react'
-import * as $ from '../tools/kit'
-import UserAttach from '../components/userAttach'
-import online_img from '../assets/online.png'
-import { Axios } from '../tools/api'
-import { setUserDetail, setUserSaving, useAppDispatch, useAppSelector } from '../tools/slices'
+import * as $ from '@/tools/kit'
+import UserAttach from '@@/UserAttach'
+import onlineImg from '@/assets/online.png'
+import { Axios } from '@/tools/api'
+import { setUserDetail, setUserSaving, useAppDispatch, useAppSelector } from '@/tools/slices'
 
 const UserCenter: React.FC = () => {
   const effectCalled = useRef(false)
@@ -101,7 +101,7 @@ const UserCenter: React.FC = () => {
                 }
               }
             >
-              <img src={online_img} alt=""
+              <img src={onlineImg} alt=""
                    style={
                      {
                        display: 'block',

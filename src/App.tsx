@@ -1,21 +1,13 @@
-import { Divider, Layout, Menu, MessagePlugin } from 'tdesign-react'
-import './App.less'
-import logo from './assets/logo-compact.png'
-import * as $ from './tools/kit'
-import { Me, MessageEmoji, Palace, SignalTower, ThinkingProblem } from './tools/kit'
-import { BrowserRouter, redirect, Route, Routes } from 'react-router-dom'
-import Ask from './pages/Ask'
-import React from 'react'
-import Explore from './pages/Explore'
-import Square from './pages/Square'
-import Report from './pages/Report'
-import Login from './pages/Login'
-import Register from './pages/Register'
-import Problem from './pages/Problem'
-import UserCenter from './pages/UserCenter'
-import SubMenu from 'tdesign-react/es/menu/SubMenu'
-import { Axios } from './tools/api'
-import { setLogout, useAppDispatch, useAppSelector } from './tools/slices'
+import { Button, Divider, Layout, Menu } from 'tdesign-react'
+import '@/App.less'
+import logo from '@/assets/logo-compact.png'
+import { Route, Routes, useNavigate, useLocation } from 'react-router-dom'
+import React, { useState } from 'react'
+import { ThinkingProblem, Palace, SignalTower, Me, MessageEmoji } from '@icon-park/react'
+import { useAppSelector } from './tools/slices'
+import AuthWrapper from '@@/AuthWrapper'
+
+import loadable from '@loadable/component'
 
 const App: React.FC = () => {
   const {
@@ -24,37 +16,78 @@ const App: React.FC = () => {
     Aside
   } = Layout
   const { MenuItem } = Menu
-  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  // const dispatch = useAppDispatch()
   const logon = useAppSelector((state) => state.user.logon)
-  const logout = () => {
-    void Axios.get('/user/logout')
-    dispatch(setLogout())
-    void MessagePlugin.success('登出成功！')
-    redirect('/')
+  // const logout = () => {
+  //   void Axios.get('/user/logout')
+  //   dispatch(setLogout())
+  //   void MessagePlugin.success('登出成功！')
+  //   navigate('/', { replace: true })
+  // }
+  // TODO 移入用户主页
+
+  const Ask = loadable(() => import('@/pages/Ask'))
+  const Explore = loadable(() => import('@/pages/Explore'))
+  const Square = loadable(() => import('@/pages/Square'))
+  const Report = loadable(() => import('@/pages/Report'))
+  const Login = loadable(() => import('@/pages/Login'))
+  const Register = loadable(() => import('@/pages/Register'))
+  const Problem = loadable(() => import('@/pages/Problem'))
+  const UserCenter = loadable(() => import('@/pages/UserCenter'))
+
+  enum NavRoute {
+    '/' = 1,
+    '/ask',
+    '/explore',
+    '/problem/1',
+    '/user',
+    '/login',
+    '/register',
+    '/report',
   }
+
+  const locationPath = useLocation().pathname
+  let currentIndex: number | undefined = undefined
+  if (locationPath in NavRoute) {
+    currentIndex = NavRoute[locationPath as keyof typeof NavRoute].valueOf()
+  }
+  const [active, setActive] = useState(currentIndex)
 
   return (
     <Layout>
       <Aside width={'72'}>
-        <Menu collapsed={true} expandMutex={false} style={{
-          height: '100vh',
-          width: '72px'
-        }}
-              logo={<$.Link to={'/'}>
-                <img width="24" src={logo} alt="logo" style={{ marginLeft: 25 }}/>
-              </$.Link>}>
-          <MenuItem value="1" href={'/ask'}><ThinkingProblem/></MenuItem>
-          <MenuItem value="2" href={'/'}><Palace/></MenuItem>
-          <MenuItem value="3" href={'/explore'}><SignalTower/></MenuItem>
-          <MenuItem value="10" href={'/problem/1'}>temp</MenuItem>
+        <Menu
+          value={active}
+          onChange={value => {
+            setActive(Number(value))
+            navigate(NavRoute[Number(value)])
+          }}
+          style={{
+            height: '100vh',
+            width: '72px'
+          }}
+          logo={<Button
+            size={'large'}
+            variant={'text'}
+            onClick={() => {
+              setActive(NavRoute['/'])
+              navigate('/')
+            }}
+            icon={<img src={logo} alt={'logo'} width={'35'}/>}
+            style={{
+              width: '100%',
+              height: '100%'
+            }}
+          />}
+        >
+          <MenuItem value={NavRoute['/ask']} icon={<ThinkingProblem size={24}/>}/>
+          <MenuItem value={NavRoute['/']} icon={<Palace size={24}/>}/>
+          <MenuItem value={NavRoute['/explore']} icon={<SignalTower size={24}/>}/>
+          <MenuItem value={NavRoute['/problem/1']}>temp</MenuItem>
           <Divider className={'leftDown'}></Divider>
-          <SubMenu value="4" icon={<Me/>}>
-            <MenuItem value="4-1" href={logon ? '/user' : '/login'}>{logon ? '用户中心' : '登录'}</MenuItem>
-            {logon
-              ? <MenuItem value="4-2" onClick={logout}>登出</MenuItem>
-              : <MenuItem value="4-2" href={'/register'}>注册</MenuItem>}
-          </SubMenu>
-          <MenuItem value="5" href={'/report'}><MessageEmoji/></MenuItem>
+          <MenuItem value={NavRoute[logon ? '/user' : '/login']} icon={<Me size={24}/>}/>
+          <MenuItem value={NavRoute['/report']} icon={<MessageEmoji size={24}/>}/>
         </Menu>
       </Aside>
       <Layout>
@@ -62,18 +95,16 @@ const App: React.FC = () => {
           height: '100%',
           padding: 20
         }}>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Square/>}/>
-              <Route path="ask" element={<Ask/>}/>
-              <Route path="explore" element={<Explore/>}/>
-              <Route path="user" element={<UserCenter/>}/>
-              <Route path="report" element={<Report/>}/>
-              <Route path="login" element={<Login/>}/>
-              <Route path="register" element={<Register/>}/>
-              <Route path="problem/:id" element={<Problem/>}/>
-            </Routes>
-          </BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Square/>}/>
+            <Route path="ask" element={<AuthWrapper><Ask/></AuthWrapper>}/>
+            <Route path="explore" element={<Explore/>}/>
+            <Route path="user" element={<AuthWrapper><UserCenter/></AuthWrapper>}/>
+            <Route path="report" element={<Report/>}/>
+            <Route path="login" element={<Login/>}/>
+            <Route path="register" element={<Register/>}/>
+            <Route path="problem/:id" element={<Problem/>}/>
+          </Routes>
         </Content>
         <Footer style={{ paddingTop: 4 }}>测试版 / © 2022 EZCoding 团队 / 北邮国际学院</Footer>
       </Layout>

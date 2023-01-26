@@ -1,5 +1,5 @@
-import Asked from '@@/asked'
-import Answered from '@@/answered'
+import Asked from '@@/Asked'
+import Answered from '@@/Answered'
 import { Tabs } from 'tdesign-react'
 import { Axios, type QuestionDetailDTO } from '@/tools/api'
 import { type AxiosResponse } from 'axios'

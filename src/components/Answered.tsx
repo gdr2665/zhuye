@@ -7,7 +7,7 @@ import '../tools/kit'
 import * as $ from '../tools/kit'
 import online from '../assets/online.png'
 
-import AceEditor, { type InterAnnotation, type InterMarker, type InterPos } from '@@/aceEditor'
+import AceEditor, { type InterAnnotation, type InterMarker, type InterPos } from '@@/AceEditor'
 import React, { useEffect, useState } from 'react'
 
 // something={} 中的 something 可以是什么，使用 prop 来定义

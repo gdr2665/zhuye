@@ -1,10 +1,10 @@
 import * as $ from '../tools/kit'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, Input, MessagePlugin, Space } from 'tdesign-react'
-import { Axios, type DataMessageResponse, type UserLoginDTO } from '../tools/api'
+import { Axios, type DataMessageResponse, type UserLoginDTO } from '@/tools/api'
 import { type AxiosResponse } from 'axios'
-import { redirect } from 'react-router-dom'
-import { setLogin, useAppDispatch } from '../tools/slices'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { setLogin, useAppDispatch } from '@/tools/slices'
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('')
@@ -28,6 +28,12 @@ const Login: React.FC = () => {
       })
       .catch(err => err)
   }
+
+  useEffect(() => {
+    if (state === 'redirect') {
+      void MessagePlugin.error('该页面需要登录后才能访问')
+    }
+  }, [state])
 
   return <$.SmallerBackBox>
     <$.LargeTitle>登录</$.LargeTitle>

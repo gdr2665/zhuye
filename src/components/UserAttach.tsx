@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import './userAttach.less'
+import './UserAttach.less'
 
 const UserAttach = () => {
   const [dropState, setDropState] = useState([false, false])
