@@ -44,7 +44,7 @@ int main()
   }
   if (!pFetched) {
     pFetched = true
-    Axios.get(`/question/${id === undefined ? '' : id}`)
+    Axios.get(`/question/${id ?? ''}`)
       .then((response: AxiosResponse<QuestionDetailDTO>) => {
         data = response.data
       })

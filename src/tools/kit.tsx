@@ -215,11 +215,3 @@ export function upperToCapital (upper: string): string {
   }
   return capArr.join('')
 }
-
-export function redirect (to: string) {
-  let url = window.location.href
-  if (url.endsWith('/')) url = url.slice(0, -1)
-  const urlSplit = url.split('/')
-  url = urlSplit[0] + '//' + urlSplit[2] + to
-  window.location.replace(url)
-}

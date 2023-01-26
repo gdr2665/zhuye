@@ -2,8 +2,8 @@ import { Divider, Layout, Menu, MessagePlugin } from 'tdesign-react'
 import './App.less'
 import logo from './assets/logo-compact.png'
 import * as $ from './tools/kit'
-import { Me, MessageEmoji, Palace, redirect, SignalTower, ThinkingProblem } from './tools/kit'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Me, MessageEmoji, Palace, SignalTower, ThinkingProblem } from './tools/kit'
+import { BrowserRouter, Route, Routes, redirect } from 'react-router-dom'
 import Ask from './pages/Ask'
 import React from 'react'
 import Explore from './pages/Explore'
@@ -16,7 +16,7 @@ import UserCenter from './pages/UserCenter'
 import SubMenu from 'tdesign-react/es/menu/SubMenu'
 import { Axios } from './tools/api'
 
-const App = () => {
+const App: React.FC = () => {
   const {
     Content,
     Footer,
