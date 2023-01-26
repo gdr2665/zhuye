@@ -23,7 +23,7 @@ import online from "../assets/online.png"
 
 import AceEditor, {InterAnnotation, InterMarker, InterPos} from '../tools/aceEditor'
 import React, {useEffect, useState} from "react";
-import {Convert, ProblemType} from "../tools/apifox";
+import {Convert, ProblemType} from "../tools/api";
 
 // something={} 中的 something 可以是什么，使用 prop 来定义
 // 而因为 TypeScript 要求强制类型，所以 prop 定义形式长下面这样
