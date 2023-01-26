@@ -1,8 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Col, Dialog, Row} from 'tdesign-react';
 import * as $ from "../tools/kit"
-import UserAttach from '../components/userAttach';
-import UpdateUserForm from '../components/updateUserInfoForm';
+import UserAttach from '../components/user_attach';
+import UpdateUserForm from '../components/update_user_info_form';
 import online_img from '../assets/online.png';
 import {Axios, Role, UserDetailDTO, UserSavingDTO} from "../tools/apifox";
 

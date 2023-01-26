@@ -22,7 +22,7 @@ const App = () => {
     const Logo = () => <img width="24" src={logo} alt="logo"
                             style={{marginLeft: 25}}/>
     let logon = localStorage.getItem("logon") == String(true)
-    const logout = async (_: { e: React.MouseEvent; }) => {
+    const logout = async (context: { e: React.MouseEvent; }) => {
         await Axios.get("/user/logout", {
             headers: {
                 'User-Agent': 'Apifox/1.0.0 (https://www.apifox.cn)',
