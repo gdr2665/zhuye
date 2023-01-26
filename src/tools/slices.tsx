@@ -1,5 +1,7 @@
-import { configureStore, createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { combineReducers, configureStore, createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import { type TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+import { persistReducer, persistStore } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 import { Role, type UserDetailDTO, type UserSavingDTO } from './api'
 
 export interface UserState {
@@ -43,11 +45,18 @@ const userSlice = createSlice({
 
 export const { setLogin, setLogout, setUserDetail, setUserSaving } = userSlice.actions
 export const userReducer = userSlice.reducer
-export const store = configureStore({
-  reducer: {
-    user: userReducer
-  }
+const rootReducer = combineReducers({
+  user: userReducer
 })
+const rootPersistConfig = {
+  key: 'root',
+  storage
+}
+const persistedReducer = persistReducer(rootPersistConfig, rootReducer)
+export const store = configureStore({
+  reducer: persistedReducer
+})
+export const persistor = persistStore(store)
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 export const useAppDispatch: () => AppDispatch = useDispatch

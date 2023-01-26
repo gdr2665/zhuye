@@ -2,20 +2,7 @@
 // 本代码备注不包含 /pages/Ask.tsx 中已经备注过的部分
 // 本文件实现了一个自定义组件，用于展示用户对问题的回答，对其具体引用的实例可以见 /pages/Problem.tsx
 
-import {
-  Button,
-  Card,
-  Col,
-  Comment,
-  Dialog,
-  type DialogCloseContext,
-  Divider,
-  Input,
-  Row,
-  Space,
-  Textarea,
-  Tooltip
-} from 'tdesign-react'
+import { Button, Card, Col, Comment, Dialog, Divider, Input, Row, Space, Textarea, Tooltip } from 'tdesign-react'
 import '../tools/kit'
 import * as $ from '../tools/kit'
 import online from '../assets/online.png'
@@ -41,18 +28,6 @@ function Answered (props: propsType) {
   const Online = () => <img width="60" src={online} alt="online"/>
   const [upVotes, setUpVotes] = useState(0)
   const [reportDialogVisible, setReportDialogVisible] = useState(false)
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const toSetRDV_T = (e: React.MouseEvent) => {
-    setReportDialogVisible(true)
-  }
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const toSetRDV_F_M = (context: { e: React.MouseEvent<HTMLButtonElement, MouseEvent> }) => {
-    setReportDialogVisible(false)
-  }
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const toSetRDV_F_D = (context: DialogCloseContext) => {
-    setReportDialogVisible(false)
-  }
 
   /* Part 1, Comments Initializing */
   const [replyData, setReplayData] = useState('')
@@ -165,9 +140,9 @@ function Answered (props: propsType) {
                         </Space>
                         <$.Nbsp width={'3'}/>
                         <Button variant={'text'} size={'small'} theme={'danger'}
-                                style={{ opacity: '0.6' }} onClick={toSetRDV_T}>举报</Button>
-                        <Dialog header="请输入举报理由" visible={reportDialogVisible} onClose={toSetRDV_F_D}
-                                onCancel={toSetRDV_F_M}>
+                                style={{ opacity: '0.6' }} onClick={() => { setReportDialogVisible(true) }}>举报</Button>
+                        <Dialog header="请输入举报理由" visible={reportDialogVisible} onClose={() => { setReportDialogVisible(false) }}
+                                onCancel={() => { setReportDialogVisible(false) }}>
                             <Input placeholder={'暂未开放，请向老师举报'}></Input>
                         </Dialog>
                         <$.Nbsp width={'18'}/>
