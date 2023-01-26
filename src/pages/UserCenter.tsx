@@ -1,74 +1,73 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Col, Dialog, Row} from 'tdesign-react';
-import * as $ from "../tools/kit"
-import UserAttach from '../components/userAttach';
-import UpdateUserForm from '../components/updateUserInfoForm';
-import online_img from '../assets/online.png';
-import {Axios, Role, UserDetailDTO, UserSavingDTO} from "../tools/api";
+import React, { useEffect, useRef, useState } from 'react'
+import { Col, Dialog, Row } from 'tdesign-react'
+import * as $ from '../tools/kit'
+import UserAttach from '../components/userAttach'
+import UpdateUserForm from '../components/updateUserInfoForm'
+import online_img from '../assets/online.png'
+import { Axios, Role, type UserDetailDTO, type UserSavingDTO } from '../tools/api'
 
 const UserCenter = () => {
-    const effectCalled = useRef(false);
+  const effectCalled = useRef(false)
 
-    const [user, set_user] = useState<UserDetailDTO>({
-        "email": "",
-        "realName": "",
-        "role": Role.User,
-        "username": "",
-        "studentId": "",
-        "id": 0
-    });
+  const [user, setUser] = useState<UserDetailDTO>({
+    email: '',
+    realName: '',
+    role: Role.User,
+    username: '',
+    studentId: '',
+    id: 0
+  })
 
-    const [user_saving, set_user_saving] = useState<UserSavingDTO>({
-        "exps": 0,
-        "coins": 0
-    });
+  const [userSaving, setUserSaving] = useState<UserSavingDTO>({
+    exps: 0,
+    coins: 0
+  })
 
-    const [visibleBtn, setVisibleBtn] = useState(false);
+  const [visibleBtn, setVisibleBtn] = useState(false)
 
-    useEffect(() => {
-        if (effectCalled.current) return;
-        //获取用户信息
-        Axios.get("/user/detail", {
-            headers: {
-                'User-Agent': 'Apifox/1.0.0 (https://www.apifox.cn)',
-                'Content-Type': 'application/json',
-            }
-        })
-            .then(function (response) {
-                //handle success
-                console.log(response);
-                set_user(response.data);
-            })
-            .catch(function (response) {
-                //handle error
-                console.log(response);
-            });
+  useEffect(() => {
+    if (effectCalled.current) return
+    // 获取用户信息
+    Axios.get('/user/detail', {
+      headers: {
+        'User-Agent': 'Apifox/1.0.0 (https://www.apifox.cn)',
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(function (response) {
+        // handle success
+        console.log(response)
+        setUser(response.data)
+      })
+      .catch(function (response) {
+        // handle error
+        console.log(response)
+      })
 
-        //获取用户积分金币
-        Axios.get("/user/saving", {
-            headers: {
-                'User-Agent': 'Apifox/1.0.0 (https://www.apifox.cn)',
-                'Content-Type': 'application/json',
-            }
-        })
-            .then(function (response) {
-                //handle success
-                console.log(response);
-                set_user_saving(response.data);
-            })
-            .catch(function (response) {
-                //handle error
-                console.log(response);
-            });
+    // 获取用户积分金币
+    Axios.get('/user/saving', {
+      headers: {
+        'User-Agent': 'Apifox/1.0.0 (https://www.apifox.cn)',
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(function (response) {
+        // handle success
+        console.log(response)
+        setUserSaving(response.data)
+      })
+      .catch(function (response) {
+        // handle error
+        console.log(response)
+      })
 
-        effectCalled.current = true;
-    }, []);
+    effectCalled.current = true
+  }, [])
 
-
-    return <$.BackBox>
+  return <$.BackBox>
         <$.LargeTitle>用户中心</$.LargeTitle>
         {/* 用户基本信息 */}
-        <Row gutter={{xs: 8, sm: 16, md: 24,}}>
+        <Row gutter={{ xs: 8, sm: 16, md: 24 }}>
             <Col span={5}>
                 <Row
 
@@ -76,10 +75,10 @@ const UserCenter = () => {
                     align="middle"
                     style={
                         {
-                            backgroundColor: 'gray',
-                            padding: '0 10px 0 10px',
-                            height: '40px',
-                            borderRadius: '8px',
+                          backgroundColor: 'gray',
+                          padding: '0 10px 0 10px',
+                          height: '40px',
+                          borderRadius: '8px'
                         }
                     }
                 >
@@ -87,17 +86,17 @@ const UserCenter = () => {
                         <div
                             style={
                                 {
-                                    display: 'flex',
+                                  display: 'flex'
                                 }
                             }
                         >
                             <span
                                 style={
                                     {
-                                        display: 'block',
-                                        marginRight: '10px',
-                                        fontSize: '26px',
-                                        color: '#ffffff'
+                                      display: 'block',
+                                      marginRight: '10px',
+                                      fontSize: '26px',
+                                      color: '#ffffff'
                                     }
                                 }
                             >
@@ -106,8 +105,8 @@ const UserCenter = () => {
                             <span
                                 style={
                                     {
-                                        display: 'block',
-                                        marginRight: '10px',
+                                      display: 'block',
+                                      marginRight: '10px'
                                     }
                                 }
                             >
@@ -118,26 +117,26 @@ const UserCenter = () => {
                     <Col span={4}
                          style={
                              {
-                                 maxHeight: '40px',
-                                 display: 'flex',
-                                 justifyContent: 'right',
+                               maxHeight: '40px',
+                               display: 'flex',
+                               justifyContent: 'right'
                              }
                          }
                     >
                         <div
                             style={
                                 {
-                                    maxHeight: '40px',
-                                    display: 'flex',
+                                  maxHeight: '40px',
+                                  display: 'flex'
                                 }
                             }
                         >
                             <img src={online_img} alt=""
                                  style={
                                      {
-                                         display: 'block',
-                                         height: '30px',
-                                         objectFit: 'cover',
+                                       display: 'block',
+                                       height: '30px',
+                                       objectFit: 'cover'
                                      }
                                  }
                             />
@@ -147,11 +146,11 @@ const UserCenter = () => {
                 <Row justify='start' align='middle'
                      style={
                          {
-                             backgroundColor: 'lightgray',
-                             margin: '10px 0 0 0',
-                             padding: '0 10px 0 10px',
-                             height: '30px',
-                             borderRadius: '8px',
+                           backgroundColor: 'lightgray',
+                           margin: '10px 0 0 0',
+                           padding: '0 10px 0 10px',
+                           height: '30px',
+                           borderRadius: '8px'
                          }
                      }
                 >
@@ -167,54 +166,54 @@ const UserCenter = () => {
             <Col span={4}
                  style={
                      {
-                         height: '80px',
+                       height: '80px'
                      }
                  }
             >
                 <Row
-                    gutter={{xs: 8, sm: 16, md: 24,}}
+                    gutter={{ xs: 8, sm: 16, md: 24 }}
                 >
                     <Col
                         span={6}
                         style={
                             {
-                                backgroundColor: 'lightgray',
-                                height: '80px',
-                                padding: '15px 0 0 15px',
-                                borderRadius: '8px',
+                              backgroundColor: 'lightgray',
+                              height: '80px',
+                              padding: '15px 0 0 15px',
+                              borderRadius: '8px'
                             }
                         }
                     >
                         <$.Str>
-                            金币数 {user_saving.coins}
+                            金币数 {userSaving.coins}
                         </$.Str>
-                        <div style={{height: '10px'}}></div>
+                        <div style={{ height: '10px' }}></div>
                         <$.Str>
-                            经验数 {user_saving.exps}
+                            经验数 {userSaving.exps}
                         </$.Str>
                     </Col>
                     <Col span={6}
                          style={
                              {
-                                 height: '80px',
-                                 paddingTop: '50px'
+                               height: '80px',
+                               paddingTop: '50px'
                              }
                          }
                     >
                         <button
                             style={
                                 {
-                                    display: 'block',
-                                    width: '100%',
-                                    height: '30px',
-                                    color: '#ffffff',
-                                    backgroundColor: '#333333',
-                                    border: 'none',
-                                    borderRadius: '8px',
-                                    cursor: 'pointer',
+                                  display: 'block',
+                                  width: '100%',
+                                  height: '30px',
+                                  color: '#ffffff',
+                                  backgroundColor: '#333333',
+                                  border: 'none',
+                                  borderRadius: '8px',
+                                  cursor: 'pointer'
                                 }
                             }
-                            onClick={() => setVisibleBtn(true)}
+                            onClick={() => { setVisibleBtn(true) }}
                         >
                             修改个人资料
                         </button>
@@ -224,7 +223,7 @@ const UserCenter = () => {
         </Row>
 
         <Row
-            gutter={{xs: 8, sm: 16, md: 24,}}
+            gutter={{ xs: 8, sm: 16, md: 24 }}
         >
             <Col span={9}>
                 <UserAttach/>
@@ -234,15 +233,15 @@ const UserCenter = () => {
         <Dialog
             header="个人资料更新"
             visible={visibleBtn}
-            onEscKeydown={() => setVisibleBtn(false)}
-            onCloseBtnClick={() => setVisibleBtn(false)}
-            onOverlayClick={() => setVisibleBtn(false)}
+            onEscKeydown={() => { setVisibleBtn(false) }}
+            onCloseBtnClick={() => { setVisibleBtn(false) }}
+            onOverlayClick={() => { setVisibleBtn(false) }}
             footer={
                 <>
                 </>
             }
         >
-            <UpdateUserForm user={user} set_user={set_user}></UpdateUserForm>
+            <UpdateUserForm user={user} setUser={setUser}></UpdateUserForm>
         </Dialog>
 
     </$.BackBox>

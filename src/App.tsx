@@ -23,12 +23,12 @@ const App = () => {
     Aside
   } = Layout
   const { MenuItem } = Menu
-  let logon = localStorage.getItem('logon') == String(true)
+  const logon = localStorage.getItem('logon') == String(true)
   const logout = async () => {
     await Axios.get('/user/logout', {
       headers: {
         'User-Agent': 'Apifox/1.0.0 (https://www.apifox.cn)',
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       }
     })
     localStorage.setItem('logon', String(false))
@@ -53,8 +53,9 @@ const App = () => {
           <Divider className={'leftDown'}></Divider>
           <SubMenu value="4" icon={<Me/>}>
             <MenuItem value="4-1" href={logon ? '/user' : '/login'}>{logon ? '用户中心' : '登录'}</MenuItem>
-            {logon ? <MenuItem value="4-2" onClick={logout}>登出</MenuItem> :
-              <MenuItem value="4-2" href={'/register'}>注册</MenuItem>}
+            {logon
+              ? <MenuItem value="4-2" onClick={logout}>登出</MenuItem>
+              : <MenuItem value="4-2" href={'/register'}>注册</MenuItem>}
           </SubMenu>
           <MenuItem value="5" href={'/report'}><MessageEmoji/></MenuItem>
         </Menu>

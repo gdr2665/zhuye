@@ -1,9 +1,9 @@
 import Asked from '../components/asked'
 import Answered from '../components/answered'
 import { Tabs } from 'tdesign-react'
-import { Axios, Language, ProblemType, QuestionDetailDTO } from '../tools/api'
+import { Axios, Language, ProblemType, type QuestionDetailDTO } from '../tools/api'
 import * as $ from '../tools/kit'
-import { AxiosResponse } from 'axios'
+import { type AxiosResponse } from 'axios'
 import { useParams } from 'react-router-dom'
 import React from 'react'
 
@@ -11,7 +11,7 @@ let pFetched = false
 
 const Problem: React.FC = () => {
   const { TabPanel } = Tabs
-  let codeExample = `#include<stdio.h>
+  const codeExample = `#include<stdio.h>
 #include<math.h>
 int main()
 {
@@ -37,14 +37,14 @@ int main()
   let data: QuestionDetailDTO = {
     code: codeExample,
     title: '为啥这个代码输出出来的平均数最后都被四舍五入了啊（？',
-    language: Language['C'],
+    language: Language.C,
     description: '代码如上，e是double类型，a和b都是int类型，为啥输出出来e都是四舍五入后的。',
     problemType: ProblemType.Other,
     createTime: undefined
   }
   if (!pFetched) {
     pFetched = true
-    Axios.get(`/question/${id}`)
+    Axios.get(`/question/${id === undefined ? '' : id}`)
       .then((response: AxiosResponse<QuestionDetailDTO>) => {
         data = response.data
       })
@@ -68,9 +68,9 @@ int main()
         <Asked title={data.title} content={data.description}
                time={data.createTime?.toString() ?? '-'}
                language={LanguageDisplay[$.upperToCapital(data.language) as keyof typeof Language]}
-               author={data.user?.username == undefined ? '提问者' : data.user?.username}
+               author={data.user?.username === undefined ? '提问者' : data.user?.username}
                authorFrom={'电子信息工程 · 大一 · 20班'} online={true}
-               code={data.code} solved={data.solved == undefined ? false : data.solved}/>
+               code={data.code} solved={data.solved === undefined ? false : data.solved}/>
       </div>
     </TabPanel>
     <TabPanel key="1" value="1" label="Hui Dazhe 的回答">
