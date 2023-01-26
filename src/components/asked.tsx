@@ -1,8 +1,8 @@
 import { Button, Col, Dialog, type DialogCloseContext, Input, Row, Space } from 'tdesign-react'
-import '../tools/kit'
-import * as $ from '../tools/kit'
-import online from '../assets/online.png'
-import AceEditor from '../tools/aceEditor'
+import '@/tools/kit'
+import * as $ from '@/tools/kit'
+import online from '@/assets/online.png'
+import AceEditor from '@@/aceEditor'
 import React, { useEffect, useState } from 'react'
 
 interface propsType {

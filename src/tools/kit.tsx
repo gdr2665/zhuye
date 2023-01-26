@@ -205,13 +205,3 @@ export function MessageEmoji () {
               strokeLinejoin="round"/>
     </svg>
 }
-
-export function upperToCapital (upper: string): string {
-  const upArr = upper.split('')
-  const capArr: string[] = []
-  for (let _i = 0; _i < upArr.length; _i++) {
-    if (_i === 0 || upArr[_i - 1] === '_') capArr.push(upArr[_i].toUpperCase())
-    else capArr.push(upArr[_i].toLowerCase())
-  }
-  return capArr.join('')
-}

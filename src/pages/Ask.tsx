@@ -2,24 +2,33 @@
 // 本文件实现了提问页功能
 
 // import ... from 可以引用我这个页面用到了的别的包
-import * as $ from '../tools/kit'
+import * as $ from '@/tools/kit'
 import React, { useState } from 'react'
-import { Button, Col, Input, MessagePlugin, Row, Select, type SelectValue, Space, Textarea } from 'tdesign-react'
-import AceEditor from '../tools/aceEditor'
-import { Axios, type DataIdResponse, Language, ProblemType, type QuestionDetailDTO } from '../tools/api'
+import { Button, Col, Input, MessagePlugin, Row, Select, Space, Textarea } from 'tdesign-react'
+import AceEditor from '@/components/aceEditor'
+import { Axios, type DataIdResponse, type Language, type QuestionDetailDTO } from '@/tools/api'
 import { type AxiosResponse } from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { LanguageMapping } from '@/tools/const'
+
+interface Saved {
+  title: string,
+  code: string,
+  reward: string,
+  language: Language,
+  description: string,
+}
 
 const Ask: React.FC = () => {
   // Form Set
   // useState 表示一个值，用前者访问这个值，后者修改这个值
   const strSaved = localStorage.getItem('questionToBeAsked')
-  let saved = {
+  let saved: Saved = {
+    title: '',
     code: '',
     reward: '',
     language: 'JAVA',
     description: '',
-    title: ''
   }
   if (strSaved != null) {
     saved = JSON.parse(strSaved)
@@ -34,10 +43,7 @@ const Ask: React.FC = () => {
   const rewardInputStatus = isNaN(+reward) ? 'error' : undefined
   const rewardTips = rewardInputStatus !== undefined ? '请输入数字' : ''
   // 下面是 useState 用于枚举类型的范例
-  const [lang, setLang] = useState(Language[$.upperToCapital(saved.language) as keyof typeof Language])
-  const onLangSet = ({ toString }: SelectValue) => {
-    setLang(Language[$.upperToCapital(toString()) as keyof typeof Language])
-  }
+  const [lang, setLang] = useState<Language>(saved.language)
 
   // Marking
   // useRef 赋予变量实际渲染出页面中的一个元素
@@ -53,9 +59,9 @@ const Ask: React.FC = () => {
   let data: QuestionDetailDTO = {
     code: '',
     title: '',
-    language: Language.C,
+    language: 'C',
     description: '',
-    problemType: ProblemType.Other
+    problemType: 'OTHER'
   }
   const toTempSave = () => {
     let rewardInt: number | null = null
@@ -65,16 +71,16 @@ const Ask: React.FC = () => {
       title,
       language: lang,
       description: content,
-      problemType: ProblemType.Other,
+      problemType: 'OTHER',
       reward: rewardInt
     }
     localStorage.setItem('questionToBeAsked', JSON.stringify(data))
   }
-  const toTempSaveAndResponse = (e: React.MouseEvent) => {
+  const toTempSaveAndResponse = () => {
     toTempSave()
     void MessagePlugin.success('当前提问数据在本地保存成功。')
   }
-  const toSubmit = (e: React.MouseEvent) => {
+  const toSubmit = () => {
     toTempSave()
     Axios.post('/question', data)
       .then(async (response: AxiosResponse<DataIdResponse>) => {
@@ -95,69 +101,68 @@ const Ask: React.FC = () => {
   // something="" 表明后面填写的内容是 html 直接可以解析的（正常 html）
   // 而 something={} 表明后面填写的将会在按照 js 代码进行解析后再被填充到 html 中
   return <$.BackBox>
-        <$.LargeTitle>提问</$.LargeTitle>
-        <Row>
-            <Col flex={7} className={'ask-left'}>
-                <Space direction="vertical" style={{ width: '100%' }}>
-                    <Input
-                        value={title}
-                        onChange={setTitle}
-                        maxlength={20}
-                        allowInputOverMax
-                        showLimitNumber
-                        placeholder="在这里输入标题"
-                        size={'large'}
-                        tips={titleTips}
-                        style={{ width: '60%' }}
-                        status={(titleTips !== '') ? 'error' : 'default'}
-                        onValidate={({ error }) => {
-                          if (error !== undefined) {
-                            console.log(error)
-                            setTitleTips((error.length > 0) ? '输入内容长度不允许超过 20 个字' : '')
-                          }
-                        }}
-                    />
-                    <AceEditor ref={editor} readOnly={false}
-                               value={code} onChange={setCode}/>
-                    <Space>
-                        <Button theme="default" onClick={toSubmit}>公开提问</Button>
-                        <Button theme="default" variant="outline" onClick={toTempSaveAndResponse}>草稿保存</Button>
-                    </Space>
-                </Space>
-            </Col>
-            <Col flex={3} className={'ask-right'}>
-                <Space direction="vertical" style={{
-                  padding: '25px 10px 0 50px',
-                  width: 'calc(100% - 30px)'
-                }}>
-                    <Select value={lang} onChange={onLangSet}>
-                        <Select.Option label="C (gcc)" value={Language.C}/>
-                        <Select.Option label="C++ (g++)" value={Language.Cpp}/>
-                        <Select.Option label="Python (python3)" value={Language.Python}/>
-                        <Select.Option label="Java (javac)" value={Language.Java}/>
-                    </Select>
-                    <Input
-                        value={reward}
-                        onChange={setReward}
-                        status={rewardInputStatus}
-                        tips={rewardTips}
-                        placeholder="在这里输入悬赏金币数量"
-                        style={{ width: '100%' }}
-                    />
-                    <Textarea
-                        value={content}
-                        onChange={setContent}
-                        placeholder="在这里输入提问的描述"
-                        autosize={{
-                          minRows: 8,
-                          maxRows: (window.innerHeight - 342) / 19
-                        }}
-                        style={{ width: '100%' }}
-                    />
-                </Space>
-            </Col>
-        </Row>
-    </$.BackBox>
+    <$.LargeTitle>提问</$.LargeTitle>
+    <Row>
+      <Col flex={7} className={'ask-left'}>
+        <Space direction="vertical" style={{ width: '100%' }}>
+          <Input
+            value={title}
+            onChange={setTitle}
+            maxlength={20}
+            allowInputOverMax
+            showLimitNumber
+            placeholder="在这里输入标题"
+            size={'large'}
+            tips={titleTips}
+            style={{ width: '60%' }}
+            status={(titleTips !== '') ? 'error' : 'default'}
+            onValidate={({ error }) => {
+              if (error !== undefined) {
+                console.log(error)
+                setTitleTips((error.length > 0) ? '输入内容长度不允许超过 20 个字' : '')
+              }
+            }}
+          />
+          <AceEditor ref={editor} readOnly={false}
+                     value={code} onChange={setCode}/>
+          <Space>
+            <Button theme="default" onClick={toSubmit}>公开提问</Button>
+            <Button theme="default" variant="outline" onClick={toTempSaveAndResponse}>草稿保存</Button>
+          </Space>
+        </Space>
+      </Col>
+      <Col flex={3} className={'ask-right'}>
+        <Space direction="vertical" style={{
+          padding: '25px 10px 0 50px',
+          width: 'calc(100% - 30px)'
+        }}>
+          <Select value={lang} onChange={option => setLang(option as Language)}>
+            {Array.from(LanguageMapping).map(data => (
+              <Select.Option key={data[0]} label={data[1]} value={data[0]}/>
+            ))}
+          </Select>
+          <Input
+            value={reward}
+            onChange={setReward}
+            status={rewardInputStatus}
+            tips={rewardTips}
+            placeholder="在这里输入悬赏金币数量"
+            style={{ width: '100%' }}
+          />
+          <Textarea
+            value={content}
+            onChange={setContent}
+            placeholder="在这里输入提问的描述"
+            autosize={{
+              minRows: 8,
+              maxRows: (window.innerHeight - 342) / 19
+            }}
+            style={{ width: '100%' }}
+          />
+        </Space>
+      </Col>
+    </Row>
+  </$.BackBox>
 }
 
 export default Ask

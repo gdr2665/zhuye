@@ -73,21 +73,12 @@ export interface QuestionDetailDTO {
 /**
  * 语言
  */
-export enum Language {
-  C = 'C',
-  Cpp = 'CPP',
-  Java = 'JAVA',
-  Python = 'PYTHON',
-}
+export type Language = 'C' | 'CPP' | 'PYTHON' | 'JAVA'
 
 /**
  * 问题类型
  */
-export enum ProblemType {
-  LocationKnown = 'LOCATION_KNOWN',
-  LocationUnknown = 'LOCATION_UNKNOWN',
-  Other = 'OTHER',
-}
+export type ProblemType = 'LOCATION_KNOWN' | 'LOCATION_UNKNOWN' | 'OTHER'
 
 /**
  * UserBriefInfoDTO，用户简单信息
