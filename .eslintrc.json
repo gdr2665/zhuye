@@ -32,7 +32,8 @@
         "endOfLine": "auto",
         "singleQuote": true
       }
-    ]
+    ],
+    "semi": ["warn", "never"]
   },
   "settings": {
     "react": {
