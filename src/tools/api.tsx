@@ -11,10 +11,11 @@ import axios, { type AxiosError, type AxiosResponse } from 'axios'
 import { MessagePlugin } from 'tdesign-react'
 
 export const Axios = axios.create({
-  baseURL: import.meta.env.PROD ? 'https://tc.yxzl.top/api' : '/api'
+  baseURL: import.meta.env.PROD ? 'https://tc.yxzl.top/api' : '/api',
 })
 
-Axios.interceptors.response.use((response: AxiosResponse) => response,
+Axios.interceptors.response.use(
+  (response: AxiosResponse) => response,
   async (error: AxiosError<InvalidFieldsResponse | InvalidMessageResponse>) => {
     if (!error.response) {
       throw error.message
@@ -25,7 +26,8 @@ Axios.interceptors.response.use((response: AxiosResponse) => response,
       throw errData
     }
     throw errData as InvalidFieldsResponse
-  })
+  },
+)
 
 /**
  * QuestionDetailDTO，提问详细信息
@@ -153,23 +155,23 @@ export interface UserRegisterDTO {
   /**
    * 邮箱
    */
-  email: string;
+  email: string
   /**
    * 密码
    */
-  password: string;
+  password: string
   /**
    * 真实姓名
    */
-  realName: string;
+  realName: string
   /**
    * 学号
    */
-  studentId?: null | string;
+  studentId?: null | string
   /**
    * 用户名
    */
-  username: string;
+  username: string
 }
 
 export interface UserSavingDTO {

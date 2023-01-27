@@ -19,7 +19,7 @@ const Login: React.FC = () => {
     }
     const data: UserLoginDTO = {
       username,
-      password
+      password,
     }
     Axios.post('/user/login', data)
       .then(async (response: AxiosResponse<DataMessageResponse>) => {
@@ -28,7 +28,7 @@ const Login: React.FC = () => {
         await MessagePlugin.success('登录成功！')
         navigate('/')
       })
-      .catch(err => err)
+      .catch((err) => err)
   }
 
   useEffect(() => {
@@ -37,30 +37,32 @@ const Login: React.FC = () => {
     }
   }, [state])
 
-  return <$.SmallerBackBox>
-    <$.LargeTitle>登录</$.LargeTitle>
-    <Space direction={'vertical'} style={{ width: '100%' }} size={'large'}>
-      <Input
-        value={username}
-        onChange={setUsername}
-        placeholder="请输入用户名（登录用的账号名）"
-        size={'large'}
-      />
-      <Input
-        type={'password'}
-        value={password}
-        onChange={setPassword}
-        placeholder="请输入密码"
-        size={'large'}
-      />
-      <Space>
-        <Button onClick={toLogin}>登录</Button>
-        <Button theme="default">
-          <NavLink to={'/register'}>注册</NavLink>
-        </Button>
+  return (
+    <$.SmallerBackBox>
+      <$.LargeTitle>登录</$.LargeTitle>
+      <Space direction={'vertical'} style={{ width: '100%' }} size={'large'}>
+        <Input
+          value={username}
+          onChange={setUsername}
+          placeholder='请输入用户名（登录用的账号名）'
+          size={'large'}
+        />
+        <Input
+          type={'password'}
+          value={password}
+          onChange={setPassword}
+          placeholder='请输入密码'
+          size={'large'}
+        />
+        <Space>
+          <Button onClick={toLogin}>登录</Button>
+          <Button theme='default'>
+            <NavLink to={'/register'}>注册</NavLink>
+          </Button>
+        </Space>
       </Space>
-    </Space>
-  </$.SmallerBackBox>
+    </$.SmallerBackBox>
+  )
 }
 
 export default Login

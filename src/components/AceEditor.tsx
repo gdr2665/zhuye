@@ -38,7 +38,7 @@ interface InterState {
 const MarkerTranslator = {
   active: 'ace-active-marker',
   warning: 'ace-warning-marker',
-  error: 'ace-error-marker'
+  error: 'ace-error-marker',
 }
 
 export default class AceEditor extends React.Component<any, any> {
@@ -50,7 +50,7 @@ export default class AceEditor extends React.Component<any, any> {
     value: PropTypes.string,
     className: PropTypes.string,
     annotation: PropTypes.array,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
   }
 
   static defaultProps = {
@@ -59,10 +59,10 @@ export default class AceEditor extends React.Component<any, any> {
     readOnly: false,
     value: '',
     className: 'main-ace',
-    onChange: null
+    onChange: null,
   }
 
-  constructor (props: InterState) {
+  constructor(props: InterState) {
     super(props)
     this.editor = React.createRef()
     this.state = {
@@ -72,7 +72,7 @@ export default class AceEditor extends React.Component<any, any> {
       language: 'c_cpp',
       marker: this.props.marker,
       annotation: this.props.annotation,
-      onChange: this.props.onChange
+      onChange: this.props.onChange,
     }
   }
 
@@ -90,7 +90,9 @@ export default class AceEditor extends React.Component<any, any> {
     this.editor.current?.editor.clearSelection()
   }
 
-  setMinLines = (minLines: number) => { this.setState({ minLine: minLines }) }
+  setMinLines = (minLines: number) => {
+    this.setState({ minLine: minLines })
+  }
 
   getMinLines = () => this.state.minLine
 
@@ -104,44 +106,48 @@ export default class AceEditor extends React.Component<any, any> {
       startRow: selection?.start.row ?? 0,
       startCol: selection?.start.column ?? 0,
       endRow: selection?.end.row ?? 0,
-      endCol: selection?.end.column ?? 0
+      endCol: selection?.end.column ?? 0,
     }
     return pos
   }
 
-  render () {
+  render() {
     return (
-            <Editor
-                mode={this.state.language}
-                theme="crimson_editor"
-                ref={this.editor}
-                placeholder="// 在这里输入你的代码 ..."
-                fontSize={14}
-                minLines={this.state.minLine}
-                maxLines={100}
-                readOnly={this.props.readOnly}
-                className={this.props.className}
-                highlightActiveLine={!this.props.readOnly}
-                markers={this.state.marker.map((element: InterMarker) => ({
-                  startRow: element.startRow,
-                  startCol: element.startCol,
-                  endRow: element.endRow,
-                  endCol: element.endCol,
-                  className: [MarkerTranslator[element.type as keyof typeof MarkerTranslator],
-                    element.active ? MarkerTranslator.active : ''].join(' '),
-                  type: 'text'
-                }))}
-                annotations={this.state.annotation.map((element: InterAnnotation, index: number) => ({
-                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                  className: `ace-n ace-${element.type} ace-n-${this.state.marker.at(index).type.toString()}`,
-                  column: element.column,
-                  row: element.row,
-                  text: element.text,
-                  type: 'info'
-                }))}
-                value={this.props.value}
-                onChange={this.props.onChange}
-            />
+      <Editor
+        mode={this.state.language}
+        theme='crimson_editor'
+        ref={this.editor}
+        placeholder='// 在这里输入你的代码 ...'
+        fontSize={14}
+        minLines={this.state.minLine}
+        maxLines={100}
+        readOnly={this.props.readOnly}
+        className={this.props.className}
+        highlightActiveLine={!this.props.readOnly}
+        markers={this.state.marker.map((element: InterMarker) => ({
+          startRow: element.startRow,
+          startCol: element.startCol,
+          endRow: element.endRow,
+          endCol: element.endCol,
+          className: [
+            MarkerTranslator[element.type as keyof typeof MarkerTranslator],
+            element.active ? MarkerTranslator.active : '',
+          ].join(' '),
+          type: 'text',
+        }))}
+        annotations={this.state.annotation.map((element: InterAnnotation, index: number) => ({
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+          className: `ace-n ace-${element.type} ace-n-${this.state.marker
+            .at(index)
+            .type.toString()}`,
+          column: element.column,
+          row: element.row,
+          text: element.text,
+          type: 'info',
+        }))}
+        value={this.props.value}
+        onChange={this.props.onChange}
+      />
     )
   }
 }

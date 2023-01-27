@@ -39,7 +39,7 @@ int main()
     language: 'C',
     description: '代码如上，e是double类型，a和b都是int类型，为啥输出出来e都是四舍五入后的。',
     problemType: 'OTHER',
-    createTime: undefined
+    createTime: undefined,
   }
   if (!pFetched) {
     pFetched = true
@@ -47,34 +47,55 @@ int main()
       .then((response: AxiosResponse<QuestionDetailDTO>) => {
         data = response.data
       })
-      .catch(err => err)
+      .catch((err) => err)
   }
 
-  return <Tabs placement={'top'} size={'medium'} disabled={false} theme={'card'} defaultValue={'0'}
-               style={{ height: '100%' }}>
-    <TabPanel key="0" value="0" label="原问题">
-      <div className="tabs-content" style={{
-        margin: 20,
-        height: '100%'
-      }}>
-        <Asked title={data.title} content={data.description}
-               time={data.createTime?.toString() ?? '-'}
-               language={data.language}
-               author={data.user?.username === undefined ? '提问者' : data.user?.username}
-               authorFrom={'电子信息工程 · 大一 · 20班'} online={true}
-               code={data.code} solved={data.solved === undefined ? false : data.solved}/>
-      </div>
-    </TabPanel>
-    <TabPanel key="1" value="1" label="Hui Dazhe 的回答">
-      <div className="tabs-content" style={{ margin: 20 }}>
-        <Answered title={'为啥这个代码输出出来的平均数最后都被四舍五入了啊（？'}
-                  askedTime={'今天 15:09'} asker={'Ti Wenzhe'}
-                  answerer={'Hui Dazhe'} answeredTime={'今天 15:22'}
-                  answererFrom={'电子信息工程 · 大一 · 17班'} online={true}
-                  code={data.code}/>
-      </div>
-    </TabPanel>
-  </Tabs>
+  return (
+    <Tabs
+      placement={'top'}
+      size={'medium'}
+      disabled={false}
+      theme={'card'}
+      defaultValue={'0'}
+      style={{ height: '100%' }}
+    >
+      <TabPanel key='0' value='0' label='原问题'>
+        <div
+          className='tabs-content'
+          style={{
+            margin: 20,
+            height: '100%',
+          }}
+        >
+          <Asked
+            title={data.title}
+            content={data.description}
+            time={data.createTime?.toString() ?? '-'}
+            language={data.language}
+            author={data.user?.username === undefined ? '提问者' : data.user?.username}
+            authorFrom={'电子信息工程 · 大一 · 20班'}
+            online={true}
+            code={data.code}
+            solved={data.solved === undefined ? false : data.solved}
+          />
+        </div>
+      </TabPanel>
+      <TabPanel key='1' value='1' label='Hui Dazhe 的回答'>
+        <div className='tabs-content' style={{ margin: 20 }}>
+          <Answered
+            title={'为啥这个代码输出出来的平均数最后都被四舍五入了啊（？'}
+            askedTime={'今天 15:09'}
+            asker={'Ti Wenzhe'}
+            answerer={'Hui Dazhe'}
+            answeredTime={'今天 15:22'}
+            answererFrom={'电子信息工程 · 大一 · 17班'}
+            online={true}
+            code={data.code}
+          />
+        </div>
+      </TabPanel>
+    </Tabs>
+  )
 }
 
 export default Problem

@@ -13,11 +13,11 @@ import { LanguageMapping } from '@/tools/const'
 import { setQuestionToAsk, useAppDispatch, useAppSelector } from '@/tools/slices'
 
 interface Saved {
-  title: string,
-  code: string,
-  reward: string,
-  language: Language,
-  description: string,
+  title: string
+  code: string
+  reward: string
+  language: Language
+  description: string
 }
 
 const Ask: React.FC = () => {
@@ -61,14 +61,16 @@ const Ask: React.FC = () => {
   const toTempSave = () => {
     let rewardInt: number | null = null
     if (reward !== '') rewardInt = parseInt(reward)
-    dispatch(setQuestionToAsk({
-      code: editor.current.getCode(),
-      title,
-      language: lang,
-      description: content,
-      problemType: 'OTHER',
-      reward: rewardInt
-    }))
+    dispatch(
+      setQuestionToAsk({
+        code: editor.current.getCode(),
+        title,
+        language: lang,
+        description: content,
+        problemType: 'OTHER',
+        reward: rewardInt,
+      }),
+    )
   }
   const toTempSaveAndResponse = () => {
     toTempSave()
@@ -85,7 +87,7 @@ const Ask: React.FC = () => {
         // TODO: 悬赏从用户的金币里扣除（API暂无）
         navigate('/')
       })
-      .catch(err => err)
+      .catch((err) => err)
   }
 
   // 最后这个 return 内内容契合 html 语法
@@ -94,69 +96,77 @@ const Ask: React.FC = () => {
   // Row，Col 等是 TDesign 定义的 ui 元素
   // something="" 表明后面填写的内容是 html 直接可以解析的（正常 html）
   // 而 something={} 表明后面填写的将会在按照 js 代码进行解析后再被填充到 html 中
-  return <$.BackBox>
-    <$.LargeTitle>提问</$.LargeTitle>
-    <Row>
-      <Col flex={7} className={'ask-left'}>
-        <Space direction="vertical" style={{ width: '100%' }}>
-          <Input
-            value={title}
-            onChange={setTitle}
-            maxlength={20}
-            allowInputOverMax
-            showLimitNumber
-            placeholder="在这里输入标题"
-            size={'large'}
-            tips={titleTips}
-            style={{ width: '60%' }}
-            status={(titleTips !== '') ? 'error' : 'default'}
-            onValidate={({ error }) => {
-              if (error !== undefined) {
-                console.log(error)
-                setTitleTips((error.length > 0) ? '输入内容长度不允许超过 20 个字' : '')
-              }
-            }}
-          />
-          <AceEditor ref={editor} readOnly={false}
-                     value={code} onChange={setCode}/>
-          <Space>
-            <Button theme="default" onClick={toSubmit}>公开提问</Button>
-            <Button theme="default" variant="outline" onClick={toTempSaveAndResponse}>草稿保存</Button>
+  return (
+    <$.BackBox>
+      <$.LargeTitle>提问</$.LargeTitle>
+      <Row>
+        <Col flex={7} className={'ask-left'}>
+          <Space direction='vertical' style={{ width: '100%' }}>
+            <Input
+              value={title}
+              onChange={setTitle}
+              maxlength={20}
+              allowInputOverMax
+              showLimitNumber
+              placeholder='在这里输入标题'
+              size={'large'}
+              tips={titleTips}
+              style={{ width: '60%' }}
+              status={titleTips !== '' ? 'error' : 'default'}
+              onValidate={({ error }) => {
+                if (error !== undefined) {
+                  console.log(error)
+                  setTitleTips(error.length > 0 ? '输入内容长度不允许超过 20 个字' : '')
+                }
+              }}
+            />
+            <AceEditor ref={editor} readOnly={false} value={code} onChange={setCode} />
+            <Space>
+              <Button theme='default' onClick={toSubmit}>
+                公开提问
+              </Button>
+              <Button theme='default' variant='outline' onClick={toTempSaveAndResponse}>
+                草稿保存
+              </Button>
+            </Space>
           </Space>
-        </Space>
-      </Col>
-      <Col flex={3} className={'ask-right'}>
-        <Space direction="vertical" style={{
-          padding: '25px 10px 0 50px',
-          width: 'calc(100% - 30px)'
-        }}>
-          <Select value={lang} onChange={option => setLang(option as Language)}>
-            {Array.from(LanguageMapping).map(data => (
-              <Select.Option key={data[0]} label={data[1]} value={data[0]}/>
-            ))}
-          </Select>
-          <Input
-            value={reward}
-            onChange={setReward}
-            status={rewardInputStatus}
-            tips={rewardTips}
-            placeholder="在这里输入悬赏金币数量"
-            style={{ width: '100%' }}
-          />
-          <Textarea
-            value={content}
-            onChange={setContent}
-            placeholder="在这里输入提问的描述"
-            autosize={{
-              minRows: 8,
-              maxRows: (window.innerHeight - 342) / 19
+        </Col>
+        <Col flex={3} className={'ask-right'}>
+          <Space
+            direction='vertical'
+            style={{
+              padding: '25px 10px 0 50px',
+              width: 'calc(100% - 30px)',
             }}
-            style={{ width: '100%' }}
-          />
-        </Space>
-      </Col>
-    </Row>
-  </$.BackBox>
+          >
+            <Select value={lang} onChange={(option) => setLang(option as Language)}>
+              {Array.from(LanguageMapping).map((data) => (
+                <Select.Option key={data[0]} label={data[1]} value={data[0]} />
+              ))}
+            </Select>
+            <Input
+              value={reward}
+              onChange={setReward}
+              status={rewardInputStatus}
+              tips={rewardTips}
+              placeholder='在这里输入悬赏金币数量'
+              style={{ width: '100%' }}
+            />
+            <Textarea
+              value={content}
+              onChange={setContent}
+              placeholder='在这里输入提问的描述'
+              autosize={{
+                minRows: 8,
+                maxRows: (window.innerHeight - 342) / 19,
+              }}
+              style={{ width: '100%' }}
+            />
+          </Space>
+        </Col>
+      </Row>
+    </$.BackBox>
+  )
 }
 
 export default Ask
