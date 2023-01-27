@@ -11,10 +11,11 @@ import axios, { type AxiosError, type AxiosResponse } from 'axios'
 import { MessagePlugin } from 'tdesign-react'
 
 export const Axios = axios.create({
-  baseURL: import.meta.env.PROD ? 'https://tc.yxzl.top/api' : '/api'
+  baseURL: import.meta.env.PROD ? 'https://tc.yxzl.top/api' : '/api',
 })
 
-Axios.interceptors.response.use((response: AxiosResponse) => response,
+Axios.interceptors.response.use(
+  (response: AxiosResponse) => response,
   async (error: AxiosError<InvalidFieldsResponse | InvalidMessageResponse>) => {
     if (!error.response) {
       throw error.message
@@ -25,7 +26,8 @@ Axios.interceptors.response.use((response: AxiosResponse) => response,
       throw errData
     }
     throw errData as InvalidFieldsResponse
-  })
+  },
+)
 
 /**
  * QuestionDetailDTO，提问详细信息
@@ -73,21 +75,12 @@ export interface QuestionDetailDTO {
 /**
  * 语言
  */
-export enum Language {
-  C = 'C',
-  Cpp = 'CPP',
-  Java = 'JAVA',
-  Python = 'PYTHON',
-}
+export type Language = 'C' | 'CPP' | 'PYTHON' | 'JAVA'
 
 /**
  * 问题类型
  */
-export enum ProblemType {
-  LocationKnown = 'LOCATION_KNOWN',
-  LocationUnknown = 'LOCATION_UNKNOWN',
-  Other = 'OTHER',
-}
+export type ProblemType = 'LOCATION_KNOWN' | 'LOCATION_UNKNOWN' | 'OTHER'
 
 /**
  * UserBriefInfoDTO，用户简单信息
@@ -152,6 +145,29 @@ export interface UserLoginDTO {
    * 密码
    */
   password: string
+  /**
+   * 用户名
+   */
+  username: string
+}
+
+export interface UserRegisterDTO {
+  /**
+   * 邮箱
+   */
+  email: string
+  /**
+   * 密码
+   */
+  password: string
+  /**
+   * 真实姓名
+   */
+  realName: string
+  /**
+   * 学号
+   */
+  studentId?: null | string
   /**
    * 用户名
    */
