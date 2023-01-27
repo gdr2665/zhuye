@@ -2,12 +2,13 @@ import { Button, Divider, Layout, Menu } from 'tdesign-react'
 import '@/App.less'
 import logo from '@/assets/logo-compact.png'
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom'
-import React, { useState } from 'react'
+import React, { useState, useLayoutEffect, Suspense } from 'react'
 import { ThinkingProblem, Palace, SignalTower, Me, MessageEmoji } from '@icon-park/react'
-import { useAppSelector } from './tools/slices'
+import { useAppSelector } from '@/tools/slices'
 import AuthWrapper from '@@/AuthWrapper'
+import Loading from '@@/Loading'
 
-import loadable from '@loadable/component'
+import { lazy } from '@loadable/component'
 
 const App: React.FC = () => {
   const {
@@ -27,14 +28,14 @@ const App: React.FC = () => {
   // }
   // TODO 移入用户主页
 
-  const Ask = loadable(() => import('@/pages/Ask'))
-  const Explore = loadable(() => import('@/pages/Explore'))
-  const Square = loadable(() => import('@/pages/Square'))
-  const Report = loadable(() => import('@/pages/Report'))
-  const Login = loadable(() => import('@/pages/Login'))
-  const Register = loadable(() => import('@/pages/Register'))
-  const Problem = loadable(() => import('@/pages/Problem'))
-  const UserCenter = loadable(() => import('@/pages/UserCenter'))
+  const LazyPage = ({ page }: { page: string }) => {
+    const Loader = lazy(() => import(`./pages/${page}`))
+    return (
+      <Suspense fallback={<Loading/>}>
+        <Loader/>
+      </Suspense>
+    )
+  }
 
   enum NavRoute {
     '/' = 1,
@@ -47,22 +48,27 @@ const App: React.FC = () => {
     '/report',
   }
 
-  const locationPath = useLocation().pathname
-  let currentIndex: number | undefined = undefined
-  if (locationPath in NavRoute) {
-    currentIndex = NavRoute[locationPath as keyof typeof NavRoute].valueOf()
+  const location = useLocation()
+  const [active, setActive] = useState<number | undefined>(undefined)
+
+  useLayoutEffect(() => {
+    if (location.pathname in NavRoute) {
+      setActive(NavRoute[location.pathname as keyof typeof NavRoute].valueOf())
+    }
+  }, [location])
+
+  const switchPage = (path: string) => {
+    if (location.pathname !== path) {
+      navigate(path)
+    }
   }
-  const [active, setActive] = useState(currentIndex)
 
   return (
     <Layout>
       <Aside width={'72'}>
         <Menu
           value={active}
-          onChange={value => {
-            setActive(Number(value))
-            navigate(NavRoute[Number(value)])
-          }}
+          onChange={value => switchPage(NavRoute[Number(value)])}
           style={{
             height: '100vh',
             width: '72px'
@@ -70,10 +76,7 @@ const App: React.FC = () => {
           logo={<Button
             size={'large'}
             variant={'text'}
-            onClick={() => {
-              setActive(NavRoute['/'])
-              navigate('/')
-            }}
+            onClick={() => switchPage('/')}
             icon={<img src={logo} alt={'logo'} width={'35'}/>}
             style={{
               width: '100%',
@@ -96,14 +99,14 @@ const App: React.FC = () => {
           padding: 20
         }}>
           <Routes>
-            <Route path="/" element={<Square/>}/>
-            <Route path="ask" element={<AuthWrapper><Ask/></AuthWrapper>}/>
-            <Route path="explore" element={<Explore/>}/>
-            <Route path="user" element={<AuthWrapper><UserCenter/></AuthWrapper>}/>
-            <Route path="report" element={<Report/>}/>
-            <Route path="login" element={<Login/>}/>
-            <Route path="register" element={<Register/>}/>
-            <Route path="problem/:id" element={<Problem/>}/>
+            <Route path="/" element={<LazyPage page={'Square'}/>}/>
+            <Route path="ask" element={<AuthWrapper element={<LazyPage page={'Ask'}/>}/>}/>
+            <Route path="explore" element={<LazyPage page={'Explore'}/>}/>
+            <Route path="user" element={<AuthWrapper element={<LazyPage page={'UserCenter'}/>}/>}/>
+            <Route path="report" element={<LazyPage page={'Report'}/>}/>
+            <Route path="login" element={<LazyPage page={'Login'}/>}/>
+            <Route path="register" element={<LazyPage page={'Register'}/>}/>
+            <Route path="problem/:id" element={<LazyPage page={'Problem'}/>}/>
           </Routes>
         </Content>
         <Footer style={{ paddingTop: 4 }}>测试版 / © 2022 EZCoding 团队 / 北邮国际学院</Footer>
