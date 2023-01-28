@@ -4,8 +4,10 @@ import * as $ from '@/tools/ui'
 import online from '@/assets/online.png'
 import AceEditor from '@@/AceEditor'
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 interface propsType {
+  id: number | undefined
   title: string
   time: string
   code: string
@@ -15,6 +17,7 @@ interface propsType {
   online: boolean
   solved: boolean
   language: string
+  mine: boolean
 }
 
 function Asked(props: propsType) {
@@ -22,9 +25,14 @@ function Asked(props: propsType) {
 
   const Online = () => <img width='60' src={online} alt='online' />
   const editor: any = React.useRef(null)
+  const navigate = useNavigate()
   useEffect(() => {
     editor.current.setMinLines((window.innerHeight - 247) / 19)
   }, [])
+
+  const markSolvedByMyself = () => {
+    // todo: 暂无API
+  }
 
   return (
     <>
@@ -72,12 +80,32 @@ function Asked(props: propsType) {
               {props.online && <Online></Online>}
             </Space>
             <Space direction={'vertical'} size={'small'}>
-              <$.Info>{props.language}</$.Info>
+              <$.Info>
+                <span className={props.solved ? 'solved' : 'not-solved'}>
+                  {props.solved ? '问题已得到解决' : '问题暂未解决'}
+                </span>
+                &nbsp;/&nbsp;{props.language}
+              </$.Info>
               <$.Str>{props.content}</$.Str>
-              <$.Box className={props.solved ? 'solved' : 'not-solved'}>
-                {props.solved ? '问题已得到解决' : '问题暂未解决'}
-              </$.Box>
             </Space>
+            <$.Box>
+              {!props.solved && props.mine ? (
+                <Button variant={'outline'} theme={'success'} onClick={markSolvedByMyself}>
+                  我已解决
+                </Button>
+              ) : null}
+              {!props.mine ? (
+                <Button
+                  variant={'outline'}
+                  theme={'primary'}
+                  onClick={() => {
+                    navigate('/answer/' + props.id)
+                  }}
+                >
+                  我来回答
+                </Button>
+              ) : null}
+            </$.Box>
           </Space>
         </Col>
       </Row>

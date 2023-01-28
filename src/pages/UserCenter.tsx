@@ -1,35 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { Col, Dialog, Row } from 'tdesign-react'
 import * as $ from '@/tools/ui'
 import UserAttach from '@@/UserAttach'
 import onlineImg from '@/assets/online.png'
-import { Axios } from '@/tools/api'
-import { setUserDetail, setUserSaving, useAppDispatch, useAppSelector } from '@/tools/data'
+import { useAppSelector } from '@/tools/data'
 
 const UserCenter: React.FC = () => {
-  const effectCalled = useRef(false)
   const [visibleBtn, setVisibleBtn] = useState(false)
   const user = useAppSelector((state) => state.user)
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    if (effectCalled.current) return
-    // 获取用户信息
-    Axios.get('/user/detail')
-      .then(async (response) => {
-        // handle success
-        console.log(response)
-        dispatch(setUserDetail(response.data))
-        return await Axios.get('/user/saving')
-      })
-      .then((response) => {
-        // handle success
-        console.log(response)
-        dispatch(setUserSaving(response.data))
-      })
-      .catch((err) => err)
-    effectCalled.current = true
-  }, [])
 
   return (
     <$.BackBox>

@@ -68,6 +68,7 @@ const Register: React.FC = () => {
         username: username,
         realName: name,
         password: password,
+        studentId: stuCode,
       }
       Axios.post('/user/register', data)
         .then(async () => {
@@ -81,7 +82,6 @@ const Register: React.FC = () => {
     }
   }
   // TODO fix for it
-  // TODO implement stucode into reg
 
   return (
     <$.SmallerBackBox>

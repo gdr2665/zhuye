@@ -1,23 +1,22 @@
 import { combineReducers, configureStore, createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import { type TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import {
-  persistStore,
-  persistReducer,
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
+  persistReducer,
+  persistStore,
   PURGE,
   REGISTER,
+  REHYDRATE,
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import {
+  type QuestionDetailDTO,
   Role,
+  SolutionDetailDTO,
   type UserDetailDTO,
   type UserSavingDTO,
-  type QuestionDetailDTO,
-  type Language,
-  type ProblemType,
 } from './api'
 
 export interface UserState {
@@ -59,18 +58,49 @@ const userSlice = createSlice({
   },
 })
 
+const initialQTA: QuestionDetailDTO = {
+  code: '',
+  title: '',
+  language: 'C',
+  description: '',
+  problemType: 'OTHER',
+  reward: null,
+}
+
+export interface QTAState {
+  data: QuestionDetailDTO
+}
+
 const questionToAskSlice = createSlice({
   name: 'questionToAsk',
   initialState: {
-    code: '',
-    title: '',
-    language: 'C' as Language,
-    description: '',
-    problemType: 'OTHERS' as ProblemType,
+    data: initialQTA,
   },
   reducers: {
-    setQuestionToAsk(state: QuestionDetailDTO, action: PayloadAction<QuestionDetailDTO>) {
-      state = action.payload
+    setQuestionToAsk(state: QTAState, action: PayloadAction<QuestionDetailDTO>) {
+      state.data = action.payload
+    },
+  },
+})
+
+const initialSTA: SolutionDetailDTO = {
+  accepted: false,
+  annotations: '',
+  likeCount: 0,
+}
+
+export interface STAState {
+  data: SolutionDetailDTO
+}
+
+const solutionToAnswerSlice = createSlice({
+  name: 'solutionToAnswer',
+  initialState: {
+    data: initialSTA,
+  },
+  reducers: {
+    setSolutionToAnswer(state: STAState, action: PayloadAction<SolutionDetailDTO>) {
+      state.data = action.payload
     },
   },
 })
@@ -79,9 +109,12 @@ export const { setLogin, setLogout, setUserDetail, setUserSaving } = userSlice.a
 export const userReducer = userSlice.reducer
 export const { setQuestionToAsk } = questionToAskSlice.actions
 export const questionToAskReducer = questionToAskSlice.reducer
+export const { setSolutionToAnswer } = solutionToAnswerSlice.actions
+export const solutionToAnswerReducer = solutionToAnswerSlice.reducer
 const rootReducer = combineReducers({
   user: userReducer,
   questionToAsk: questionToAskReducer,
+  solutionToAnswer: solutionToAnswerReducer,
 })
 const rootPersistConfig = {
   key: 'root',

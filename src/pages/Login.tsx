@@ -4,7 +4,7 @@ import { Button, Input, MessagePlugin, Space } from 'tdesign-react'
 import { Axios, type DataMessageResponse, type UserLoginDTO } from '@/tools/api'
 import { type AxiosResponse } from 'axios'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
-import { setLogin, useAppDispatch } from '@/tools/data'
+import { setLogin, setUserDetail, setUserSaving, useAppDispatch } from '@/tools/data'
 import { useEffectOnce } from '@/tools/useEffectOnce'
 
 const Login: React.FC = () => {
@@ -26,6 +26,19 @@ const Login: React.FC = () => {
       .then(async (response: AxiosResponse<DataMessageResponse>) => {
         console.log(response.data)
         dispatch(setLogin())
+        Axios.get('/user/detail')
+          .then(async (response: AxiosResponse) => {
+            // handle success
+            console.log(response)
+            dispatch(setUserDetail(response.data))
+            return await Axios.get('/user/saving')
+          })
+          .then((response: AxiosResponse) => {
+            // handle success
+            console.log(response)
+            dispatch(setUserSaving(response.data))
+          })
+          .catch((err) => err)
         await MessagePlugin.success('登录成功！')
         navigate('/')
       })

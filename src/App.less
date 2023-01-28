@@ -22,12 +22,12 @@ body {
 // Text Style
 .title {
   font-size: var(--td-font-size-title-large);
-  font-weight: 600;
+  font-weight: bold;
 }
 
 .large-title {
   font-size: calc(var(--td-font-size-title-large) * 1.4);
-  font-weight: 600;
+  font-weight: bold;
   padding-top: 5px;
   padding-bottom: 30px;
 }
@@ -39,7 +39,7 @@ body {
 
 .name {
   font-size: var(--td-font-size-title-medium);
-  font-weight: 600;
+  font-weight: bold;
 }
 
 .secondary-info {
@@ -80,6 +80,11 @@ body {
 
 .t-default-menu.t-is-collapsed .t-menu__item span {
   display: block !important;
+}
+
+.t-submenu__item.t-is-disabled {
+  cursor: default;
+  font-weight: bold;
 }
 
 .leftDown {

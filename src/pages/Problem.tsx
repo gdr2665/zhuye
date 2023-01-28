@@ -1,17 +1,23 @@
 import Asked from '@@/Asked'
 import Answered from '@@/Answered'
-import { Tabs } from 'tdesign-react'
+import { MessagePlugin, Tabs } from 'tdesign-react'
 import { Axios, type QuestionDetailDTO } from '@/tools/api'
 import { type AxiosResponse } from 'axios'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import React, { useState } from 'react'
 import { timeToUsable } from '@/tools/func'
 import { LanguageMapping } from '@/tools/const'
+import { useAppSelector } from '@/tools/data'
+import { useEffectOnce } from '@/tools/useEffectOnce'
 
 const Problem: React.FC = () => {
+  // todo: func to report abuse
+  const { state } = useLocation()
+  const user = useAppSelector((state) => state.user)
   const { TabPanel } = Tabs
   const { id } = useParams()
   const [usableTime, setUsableTime] = useState('-')
+  const [myQuestion, setMyQuestion] = useState(false)
   const [data, setData] = useState<QuestionDetailDTO>({
     code: ' ',
     title: '',
@@ -20,12 +26,18 @@ const Problem: React.FC = () => {
     problemType: 'OTHER',
     createTime: undefined,
   })
-  Axios.get(`/question/${id ?? ''}`)
-    .then((response: AxiosResponse<QuestionDetailDTO>) => {
-      setData(response.data)
-      setUsableTime(timeToUsable(response.data.createTime))
-    })
-    .catch((err) => err)
+  useEffectOnce(() => {
+    if (state === 'redirect') {
+      void MessagePlugin.error('该页面需要登录后才能访问')
+    }
+    Axios.get(`/question/${id ?? ''}`)
+      .then((response: AxiosResponse<QuestionDetailDTO>) => {
+        setData(response.data)
+        setMyQuestion((response.data.user?.id ?? 0) === user.detail.id)
+        setUsableTime(timeToUsable(response.data.createTime))
+      })
+      .catch((err) => err)
+  }, [state])
 
   return (
     <Tabs
@@ -45,6 +57,7 @@ const Problem: React.FC = () => {
           }}
         >
           <Asked
+            id={data.id}
             title={data.title}
             content={data.description}
             time={usableTime}
@@ -54,6 +67,7 @@ const Problem: React.FC = () => {
             online={true}
             code={data.code}
             solved={data.solved ?? false}
+            mine={myQuestion}
           />
         </div>
       </TabPanel>
@@ -68,6 +82,8 @@ const Problem: React.FC = () => {
             answererFrom={'电子信息工程 · 大一 · 17班'}
             online={true}
             code={data.code}
+            solved={data.solved ?? false}
+            mine={myQuestion}
           />
         </div>
       </TabPanel>

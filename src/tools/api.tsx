@@ -72,6 +72,30 @@ export interface QuestionDetailDTO {
   user?: UserBriefInfoDTO
 }
 
+export interface SolutionDetailDTO {
+  /**
+   * 是否采纳
+   */
+  accepted?: boolean
+  /**
+   * 批注
+   */
+  annotations: string
+  /**
+   * 解答创建时间
+   */
+  createTime?: Date
+  /**
+   * ID
+   */
+  id?: number
+  /**
+   * 获赞次数
+   */
+  likeCount?: number
+  user?: UserBriefInfoDTO
+}
+
 /**
  * 语言
  */

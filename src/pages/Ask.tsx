@@ -12,28 +12,10 @@ import { useNavigate } from 'react-router-dom'
 import { LanguageMapping } from '@/tools/const'
 import { setQuestionToAsk, useAppDispatch, useAppSelector } from '@/tools/data'
 
-interface Saved {
-  title: string
-  code: string
-  reward: string
-  language: Language
-  description: string
-}
-
 const Ask: React.FC = () => {
   // Form Set
   // useState 表示一个值，用前者访问这个值，后者修改这个值
-  const strSaved = localStorage.getItem('questionToBeAsked')
-  let saved: Saved = {
-    title: '',
-    code: '',
-    reward: '',
-    language: 'JAVA',
-    description: '',
-  }
-  if (strSaved != null) {
-    saved = JSON.parse(strSaved)
-  }
+  const saved = useAppSelector((state) => state.questionToAsk.data)
   const [title, setTitle] = useState(saved.title)
   const [code, setCode] = useState(saved.code)
   const [titleTips, setTitleTips] = useState('')
@@ -43,9 +25,7 @@ const Ask: React.FC = () => {
   const [reward, setReward] = useState(rewardStr)
   const rewardInputStatus = isNaN(+reward) ? 'error' : undefined
   const rewardTips = rewardInputStatus !== undefined ? '请输入数字' : ''
-  // 下面是 useState 用于枚举类型的范例
   const [lang, setLang] = useState<Language>(saved.language)
-
   // Marking
   // useRef 赋予变量实际渲染出页面中的一个元素
   const editor: any = React.useRef(null)
@@ -57,35 +37,44 @@ const Ask: React.FC = () => {
   // 这几个是提交问题时用的函数以及变量
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const questionData = useAppSelector((state) => state.questionToAsk)
   const toTempSave = () => {
     let rewardInt: number | null = null
     if (reward !== '') rewardInt = parseInt(reward)
     dispatch(
       setQuestionToAsk({
         code: editor.current.getCode(),
-        title,
+        title: title,
         language: lang,
         description: content,
         problemType: 'OTHER',
         reward: rewardInt,
+        solved: false,
       }),
     )
   }
   const toTempSaveAndResponse = () => {
     toTempSave()
-    void MessagePlugin.success('当前提问数据在本地保存成功。')
+    void MessagePlugin.success('当前提问数据在本地保存成功')
   }
   const toSubmit = () => {
     toTempSave()
-    Axios.post('/question', questionData)
+    Axios.post('/question', saved)
       .then(async (response: AxiosResponse<DataIdResponse>) => {
         const id: number = response.data.id
         console.log(id)
         await MessagePlugin.success('提问成功！')
-        localStorage.removeItem('questionToBeAsked')
-        // TODO: 悬赏从用户的金币里扣除（API暂无）
-        navigate('/')
+        dispatch(
+          setQuestionToAsk({
+            code: '',
+            title: '',
+            language: 'C',
+            description: '',
+            problemType: 'OTHER',
+            reward: null,
+          }),
+        )
+        // TODO: 悬赏从用户的金币里扣除（后端实现）
+        navigate('/problem/' + id.toString())
       })
       .catch((err) => err)
   }
@@ -105,7 +94,7 @@ const Ask: React.FC = () => {
             <Input
               value={title}
               onChange={setTitle}
-              maxlength={20}
+              maxlength={15}
               allowInputOverMax
               showLimitNumber
               placeholder='在这里输入标题'
@@ -116,7 +105,9 @@ const Ask: React.FC = () => {
               onValidate={({ error }) => {
                 if (error !== undefined) {
                   console.log(error)
-                  setTitleTips(error.length > 0 ? '输入内容长度不允许超过 20 个字' : '')
+                  setTitleTips(error.length > 0 ? '输入内容长度不允许超过 15 个字' : '')
+                } else {
+                  setTitleTips('')
                 }
               }}
             />

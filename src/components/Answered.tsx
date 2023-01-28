@@ -34,6 +34,8 @@ interface propsType {
   answererFrom: string
   online: boolean
   answeredTime: string
+  solved: boolean
+  mine: boolean
 }
 
 function Answered(props: propsType) {
@@ -110,9 +112,7 @@ function Answered(props: propsType) {
     rightFloat.current.style.height =
       (Math.max(editor.current.getLines(), editor.current.getMinLines()) * 19).toString() + 'px'
   }, [])
-
-  // 下文中有一个 {marker.map((mark, index) => { ... \n ... \n ... }} 表示对每一个 marker
-  // 进行 foreach 循环，每次提取其 mark, index 两个参数，按 (...) 中要求构建一个 html 元素
+  const markSolved = () => {}
   return (
     <>
       <Row>
@@ -194,15 +194,21 @@ function Answered(props: propsType) {
               {props.online && <Online></Online>}
             </Space>
             <Space className={'vertical-center'}>
-              <Button
-                variant={'outline'}
-                theme={'primary'}
-                onClick={() => {
-                  setUpVotes(upVotes + 1)
-                }}
-              >
-                赞 {upVotes}
-              </Button>
+              {props.mine ? (
+                <Button variant={'outline'} theme={'success'} onClick={markSolved}>
+                  采纳
+                </Button>
+              ) : (
+                <Button
+                  variant={'outline'}
+                  theme={'primary'}
+                  onClick={() => {
+                    setUpVotes(upVotes + 1)
+                  }}
+                >
+                  赞 {upVotes}
+                </Button>
+              )}
               <Tooltip content='语音答疑功能暂未开放' trigger='click'>
                 <Button variant={'outline'} disabled={!props.online}>
                   语音答疑

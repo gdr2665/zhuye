@@ -18,6 +18,7 @@ const App: React.FC = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const logon = useAppSelector((state) => state.user.logon)
+  const user = useAppSelector((state) => state.user)
   const logout = () => {
     void Axios.get('/user/logout')
     dispatch(setLogout())
@@ -39,6 +40,7 @@ const App: React.FC = () => {
     '/ask',
     '/explore',
     '/problem/1',
+    '/problem/2',
     '/user',
     '/login',
     '/register',
@@ -89,13 +91,14 @@ const App: React.FC = () => {
           <MenuItem value={NavRoute['/ask']} icon={<ThinkingProblem size={24} />} />
           <MenuItem value={NavRoute['/']} icon={<Palace size={24} />} />
           <MenuItem value={NavRoute['/explore']} icon={<SignalTower size={24} />} />
-          <MenuItem value={NavRoute['/problem/1']}>临时</MenuItem>
+          <MenuItem value={NavRoute['/problem/2']}>临时</MenuItem>
           <Divider className={'leftDown'}></Divider>
           <SubMenu
             value={NavRoute[logon ? '/user' : '/login']}
             icon={<Me size={24} />}
             className={'t-is-opened'}
           >
+            {logon ? <MenuItem disabled>{user.detail.username}</MenuItem> : null}
             <MenuItem value={NavRoute[logon ? '/user' : '/login']}>
               {logon ? '用户中心' : '登录'}
             </MenuItem>
@@ -120,6 +123,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path='/' element={<LazyPage page={'Square'} />} />
             <Route path='ask' element={<AuthWrapper element={<LazyPage page={'Ask'} />} />} />
+            <Route path='answer/:id' element={<LazyPage page={'Answer'} />} />
             <Route path='explore' element={<LazyPage page={'Explore'} />} />
             <Route
               path='user'
