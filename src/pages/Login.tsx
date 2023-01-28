@@ -1,33 +1,45 @@
 import * as $ from "../tools/kit"
 import React, {useState} from "react";
-import axios from 'axios';
 import {Button, Input, MessagePlugin, Space} from "tdesign-react";
+import { Axios, type DataMessageResponse, type UserLoginDTO } from '@/tools/api'
+import { type AxiosResponse } from 'axios'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { setLogin, useAppDispatch } from '@/tools/slices'
+import { useEffectOnce } from '@/tools/useEffectOnce'
 
-function Login() {
+const Login: React.FC = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const toLogin = (e: React.MouseEvent) => {
-        if (username != "" && password != "") {
-             axios({
-                method:"get",
-                url:"https://mock.apifox.cn/m1/1898652-0-default/user/detail",
-            })
-            .post(
-                'http://127.0.0.1:5000',{
-                    
-                        'username':username,
-                        'password':password
-    
-                }
-              ).then(res=>{
-                alert(res.data)
-              })
-        } else {
-            MessagePlugin.warning('用户名、密码不能为空');
-        }
+    const dispatch = useAppDispatch()
+    const { state } = useLocation()
+    const navigate = useNavigate()
+    const toLogin = async () => {
+     if (username === '' || password === '') {
+       await MessagePlugin.warning('用户名、密码不能为空')
+       return
+     }
+    const data: UserLoginDTO = {
+      username,
+      password,
     }
+    Axios.post('/user/login', data)
+      .then(async (response: AxiosResponse<DataMessageResponse>) => {
+        console.log(response.data)
+        dispatch(setLogin())
+        await MessagePlugin.success('登录成功！')
+        navigate('/')
+      })
+      .catch((err) => err)
+  }
 
-    return <$.SmallerBackBox>
+  useEffectOnce(() => {
+    if (state === 'redirect') {
+      void MessagePlugin.error('该页面需要登录后才能访问')
+    }
+  }, [state])
+
+    return (
+    <$.SmallerBackBox>
         <$.LargeTitle>登录</$.LargeTitle>
         <Space direction={"vertical"} style={{width: "100%"}} size={"large"}>
             <Input
@@ -44,11 +56,14 @@ function Login() {
                 size={"large"}
             />
             <Space>
-                <Button onClick={toLogin}>登录</Button>
-                <Button theme="default" href={"/register"}>注册</Button>
+              <Button onClick={toLogin}>登录</Button>
+              <Button theme='default'>
+                <NavLink to={'/register'}>注册</NavLink>
+              </Button>
             </Space>
         </Space>
     </$.SmallerBackBox>
+  )
 }
 
 export default Login
