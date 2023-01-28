@@ -2,7 +2,7 @@
 // 本文件实现了提问页功能
 
 // import ... from 可以引用我这个页面用到了的别的包
-import * as $ from '@/tools/kit'
+import * as $ from '@/tools/ui'
 import React, { useState } from 'react'
 import { Button, Col, Input, MessagePlugin, Row, Select, Space, Textarea } from 'tdesign-react'
 import AceEditor from '@@/AceEditor'
@@ -10,7 +10,7 @@ import { Axios, type DataIdResponse, type Language } from '@/tools/api'
 import { type AxiosResponse } from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { LanguageMapping } from '@/tools/const'
-import { setQuestionToAsk, useAppDispatch, useAppSelector } from '@/tools/slices'
+import { setQuestionToAsk, useAppDispatch, useAppSelector } from '@/tools/data'
 
 interface Saved {
   title: string
@@ -91,8 +91,8 @@ const Ask: React.FC = () => {
   }
 
   // 最后这个 return 内内容契合 html 语法
-  // <$.XXX> 是我在 /tools/kit.tsx 中定义的一些 ui 组件
-  // 如果你需要一些这里没有的 ui 组件，可以在 /tools/kit.tsx 中手动定义
+  // <$.XXX> 是我在 /tools/ui.tsx 中定义的一些 ui 组件
+  // 如果你需要一些这里没有的 ui 组件，可以在 /tools/ui.tsx 中手动定义
   // Row，Col 等是 TDesign 定义的 ui 元素
   // something="" 表明后面填写的内容是 html 直接可以解析的（正常 html）
   // 而 something={} 表明后面填写的将会在按照 js 代码进行解析后再被填充到 html 中

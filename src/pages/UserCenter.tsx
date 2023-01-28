@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Col, Dialog, Row } from 'tdesign-react'
-import * as $ from '@/tools/kit'
+import * as $ from '@/tools/ui'
 import UserAttach from '@@/UserAttach'
 import onlineImg from '@/assets/online.png'
 import { Axios } from '@/tools/api'
-import { setUserDetail, setUserSaving, useAppDispatch, useAppSelector } from '@/tools/slices'
+import { setUserDetail, setUserSaving, useAppDispatch, useAppSelector } from '@/tools/data'
 
 const UserCenter: React.FC = () => {
   const effectCalled = useRef(false)

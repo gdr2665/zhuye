@@ -1,28 +1,29 @@
-import { Button, Divider, Layout, Menu } from 'tdesign-react'
+import { Button, Divider, Layout, Menu, MessagePlugin } from 'tdesign-react'
 import '@/App.less'
 import logo from '@/assets/logo-compact.png'
-import { Route, Routes, useNavigate, useLocation } from 'react-router-dom'
-import React, { useState, useLayoutEffect, Suspense } from 'react'
-import { ThinkingProblem, Palace, SignalTower, Me, MessageEmoji } from '@icon-park/react'
-import { useAppSelector } from '@/tools/slices'
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import React, { Suspense, useLayoutEffect, useState } from 'react'
+import { Me, MessageEmoji, Palace, SignalTower, ThinkingProblem } from '@icon-park/react'
+import { setLogout, useAppDispatch, useAppSelector } from '@/tools/data'
 import AuthWrapper from '@@/AuthWrapper'
 import Loading from '@@/Loading'
 
 import { lazy } from '@loadable/component'
+import SubMenu from 'tdesign-react/es/menu/SubMenu'
+import { Axios } from '@/tools/api'
 
 const App: React.FC = () => {
   const { Content, Footer, Aside } = Layout
   const { MenuItem } = Menu
   const navigate = useNavigate()
-  // const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch()
   const logon = useAppSelector((state) => state.user.logon)
-  // const logout = () => {
-  //   void Axios.get('/user/logout')
-  //   dispatch(setLogout())
-  //   void MessagePlugin.success('登出成功！')
-  //   navigate('/', { replace: true })
-  // }
-  // TODO 移入用户主页
+  const logout = () => {
+    void Axios.get('/user/logout')
+    dispatch(setLogout())
+    void MessagePlugin.success('登出成功！')
+    navigate('/', { replace: true })
+  }
 
   const LazyPage = ({ page }: { page: string }) => {
     const Loader = lazy(() => import(`./pages/${page}.tsx`))
@@ -64,6 +65,9 @@ const App: React.FC = () => {
       <Aside width={'72'}>
         <Menu
           value={active}
+          expandType={'popup'}
+          collapsed={true}
+          expandMutex={false}
           onChange={(value) => switchPage(NavRoute[Number(value)])}
           style={{
             height: '100vh',
@@ -85,9 +89,24 @@ const App: React.FC = () => {
           <MenuItem value={NavRoute['/ask']} icon={<ThinkingProblem size={24} />} />
           <MenuItem value={NavRoute['/']} icon={<Palace size={24} />} />
           <MenuItem value={NavRoute['/explore']} icon={<SignalTower size={24} />} />
-          <MenuItem value={NavRoute['/problem/1']}>temp</MenuItem>
+          <MenuItem value={NavRoute['/problem/1']}>临时</MenuItem>
           <Divider className={'leftDown'}></Divider>
-          <MenuItem value={NavRoute[logon ? '/user' : '/login']} icon={<Me size={24} />} />
+          <SubMenu
+            value={NavRoute[logon ? '/user' : '/login']}
+            icon={<Me size={24} />}
+            className={'t-is-opened'}
+          >
+            <MenuItem value={NavRoute[logon ? '/user' : '/login']}>
+              {logon ? '用户中心' : '登录'}
+            </MenuItem>
+            {logon ? (
+              <MenuItem value='4-2' onClick={logout}>
+                登出
+              </MenuItem>
+            ) : (
+              <MenuItem value={NavRoute['/register']}>注册</MenuItem>
+            )}
+          </SubMenu>
           <MenuItem value={NavRoute['/report']} icon={<MessageEmoji size={24} />} />
         </Menu>
       </Aside>

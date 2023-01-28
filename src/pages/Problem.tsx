@@ -4,51 +4,28 @@ import { Tabs } from 'tdesign-react'
 import { Axios, type QuestionDetailDTO } from '@/tools/api'
 import { type AxiosResponse } from 'axios'
 import { useParams } from 'react-router-dom'
-import React from 'react'
-
-let pFetched = false
+import React, { useState } from 'react'
+import { timeToUsable } from '@/tools/func'
+import { LanguageMapping } from '@/tools/const'
 
 const Problem: React.FC = () => {
   const { TabPanel } = Tabs
-  const codeExample = `#include<stdio.h>
-#include<math.h>
-int main()
-{
-    int a,b,n,c,h,i,j,k;
-    c=0;
-    h=0;
-    scanf("%d",&a);
-    for(n=1;n<=a;n++)
-    {
-       scanf("%d",&b);
-       if (b>=60) h++;
-       else h=h;
-       b=b+c;
-       c=b;
-    }
-    double e;
-    e=b/a;
-    printf("average = %.1lf\\n count = %d",e,h);
-    return 0;
-}`
-
   const { id } = useParams()
-  let data: QuestionDetailDTO = {
-    code: codeExample,
-    title: '为啥这个代码输出出来的平均数最后都被四舍五入了啊（？',
+  const [usableTime, setUsableTime] = useState('-')
+  const [data, setData] = useState<QuestionDetailDTO>({
+    code: ' ',
+    title: '',
     language: 'C',
-    description: '代码如上，e是double类型，a和b都是int类型，为啥输出出来e都是四舍五入后的。',
+    description: '',
     problemType: 'OTHER',
     createTime: undefined,
-  }
-  if (!pFetched) {
-    pFetched = true
-    Axios.get(`/question/${id ?? ''}`)
-      .then((response: AxiosResponse<QuestionDetailDTO>) => {
-        data = response.data
-      })
-      .catch((err) => err)
-  }
+  })
+  Axios.get(`/question/${id ?? ''}`)
+    .then((response: AxiosResponse<QuestionDetailDTO>) => {
+      setData(response.data)
+      setUsableTime(timeToUsable(response.data.createTime))
+    })
+    .catch((err) => err)
 
   return (
     <Tabs
@@ -70,13 +47,13 @@ int main()
           <Asked
             title={data.title}
             content={data.description}
-            time={data.createTime?.toString() ?? '-'}
-            language={data.language}
-            author={data.user?.username === undefined ? '提问者' : data.user?.username}
+            time={usableTime}
+            language={LanguageMapping.get(data.language) ?? 'C (gcc)'}
+            author={data.user?.username ?? '提问者'}
             authorFrom={'电子信息工程 · 大一 · 20班'}
             online={true}
             code={data.code}
-            solved={data.solved === undefined ? false : data.solved}
+            solved={data.solved ?? false}
           />
         </div>
       </TabPanel>

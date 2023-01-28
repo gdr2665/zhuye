@@ -15,8 +15,8 @@ import {
   Textarea,
   Tooltip,
 } from 'tdesign-react'
-import '../tools/kit'
-import * as $ from '../tools/kit'
+import '../tools/ui'
+import * as $ from '../tools/ui'
 import online from '../assets/online.png'
 
 import AceEditor, { type InterAnnotation, type InterMarker, type InterPos } from '@@/AceEditor'

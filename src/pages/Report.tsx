@@ -1,4 +1,4 @@
-import * as $ from '@/tools/kit'
+import * as $ from '@/tools/ui'
 import React, { useState } from 'react'
 import { Button, MessagePlugin, Space, Textarea } from 'tdesign-react'
 
@@ -22,7 +22,7 @@ const Report: React.FC = () => {
           onChange={setContent}
           placeholder='请在这里输入反馈内容。'
           autosize={{
-            minRows: 8,
+            minRows: 12,
             maxRows: (window.innerHeight - 342) / 19,
           }}
           style={{ width: '100%' }}

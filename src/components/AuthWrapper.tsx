@@ -1,6 +1,6 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
-import { useAppSelector } from '@/tools/slices'
+import { useAppSelector } from '@/tools/data'
 
 const Protected = ({ element }: { element: JSX.Element }) => {
   if (!useAppSelector((state) => state.user.logon)) {

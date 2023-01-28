@@ -1,10 +1,10 @@
-import * as $ from '@/tools/kit'
+import * as $ from '@/tools/ui'
 import React, { useEffect } from 'react'
 import { Button, Cascader, Form, Input, MessagePlugin, SubmitContext } from 'tdesign-react'
 import { Axios, type UserRegisterDTO } from '@/tools/api'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { comeFrom } from '@/tools/const'
-import { setLogin, useAppDispatch } from '@/tools/slices'
+import { setLogin, useAppDispatch } from '@/tools/data'
 
 const { FormItem } = Form
 type errorType = 'error' | 'warning' | undefined
@@ -80,6 +80,8 @@ const Register: React.FC = () => {
       void MessagePlugin.warning('请检查填写是否有误')
     }
   }
+  // TODO fix for it
+  // TODO implement stucode into reg
 
   return (
     <$.SmallerBackBox>
@@ -116,6 +118,7 @@ const Register: React.FC = () => {
           <Button type='submit' block>
             注册
           </Button>
+          &nbsp;&nbsp;
           <Button theme='default'>
             <NavLink to={'/login'}>登录</NavLink>
           </Button>

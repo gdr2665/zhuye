@@ -1,10 +1,10 @@
-import * as $ from '../tools/kit'
+import * as $ from '../tools/ui'
 import React, { useState } from 'react'
 import { Button, Input, MessagePlugin, Space } from 'tdesign-react'
 import { Axios, type DataMessageResponse, type UserLoginDTO } from '@/tools/api'
 import { type AxiosResponse } from 'axios'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
-import { setLogin, useAppDispatch } from '@/tools/slices'
+import { setLogin, useAppDispatch } from '@/tools/data'
 import { useEffectOnce } from '@/tools/useEffectOnce'
 
 const Login: React.FC = () => {
