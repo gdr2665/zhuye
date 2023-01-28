@@ -1,6 +1,5 @@
-import * as $ from "../tools/kit"
-import React, { useEffecct } from "react";
-import axios from 'axios';
+import * as $ from '@/tools/kit'
+import React, { useEffect } from 'react'
 import { Button, Cascader, Form, Input, MessagePlugin, SubmitContext } from 'tdesign-react'
 import { Axios, type UserRegisterDTO } from '@/tools/api'
 import { NavLink, useNavigate } from 'react-router-dom'
@@ -113,3 +112,17 @@ const Register: React.FC = () => {
         <FormItem name={['rewritePassword']}>
           <Input type='password' placeholder='请重新输入密码' />
         </FormItem>
+        <FormItem>
+          <Button type='submit' block>
+            注册
+          </Button>
+          <Button theme='default'>
+            <NavLink to={'/login'}>登录</NavLink>
+          </Button>
+        </FormItem>
+      </Form>
+    </$.SmallerBackBox>
+  )
+}
+
+export default Register
