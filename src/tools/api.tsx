@@ -11,7 +11,7 @@ import axios, { type AxiosError, type AxiosResponse } from 'axios'
 import { MessagePlugin } from 'tdesign-react'
 
 export const Axios = axios.create({
-  baseURL: import.meta.env.PROD ? 'https://tc.yxzl.top/api' : '/api',
+  baseURL: import.meta.env.PROD ? 'https://api.code.yxzl.top' : '/api',
 })
 
 Axios.interceptors.response.use(

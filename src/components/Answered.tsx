@@ -98,9 +98,9 @@ function Answered(props: propsType) {
     setUpVotes(201)
     goMark(
       {
-        startRow: 17,
+        startRow: 0,
         startCol: 4,
-        endRow: 17,
+        endRow: 1,
         endCol: 10,
       },
       'error',

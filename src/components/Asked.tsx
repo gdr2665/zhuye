@@ -5,6 +5,7 @@ import online from '@/assets/online.png'
 import AceEditor from '@@/AceEditor'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { setSTATempCode, useAppDispatch } from '@/tools/data'
 
 interface propsType {
   id: number | undefined
@@ -26,6 +27,7 @@ function Asked(props: propsType) {
   const Online = () => <img width='60' src={online} alt='online' />
   const editor: any = React.useRef(null)
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   useEffect(() => {
     editor.current.setMinLines((window.innerHeight - 247) / 19)
   }, [])
@@ -99,6 +101,7 @@ function Asked(props: propsType) {
                   variant={'outline'}
                   theme={'primary'}
                   onClick={() => {
+                    dispatch(setSTATempCode(props.code))
                     navigate('/answer/' + props.id)
                   }}
                 >

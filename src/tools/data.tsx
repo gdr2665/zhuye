@@ -91,16 +91,21 @@ const initialSTA: SolutionDetailDTO = {
 
 export interface STAState {
   data: SolutionDetailDTO
+  tempCode: string
 }
 
 const solutionToAnswerSlice = createSlice({
   name: 'solutionToAnswer',
   initialState: {
     data: initialSTA,
+    tempCode: '',
   },
   reducers: {
     setSolutionToAnswer(state: STAState, action: PayloadAction<SolutionDetailDTO>) {
       state.data = action.payload
+    },
+    setSTATempCode(state: STAState, action: PayloadAction<string>) {
+      state.tempCode = action.payload
     },
   },
 })
@@ -109,7 +114,7 @@ export const { setLogin, setLogout, setUserDetail, setUserSaving } = userSlice.a
 export const userReducer = userSlice.reducer
 export const { setQuestionToAsk } = questionToAskSlice.actions
 export const questionToAskReducer = questionToAskSlice.reducer
-export const { setSolutionToAnswer } = solutionToAnswerSlice.actions
+export const { setSolutionToAnswer, setSTATempCode } = solutionToAnswerSlice.actions
 export const solutionToAnswerReducer = solutionToAnswerSlice.reducer
 const rootReducer = combineReducers({
   user: userReducer,

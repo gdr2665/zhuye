@@ -134,8 +134,16 @@ body {
   font-size: var(--td-font-size-body-medium);
 }
 
+.ace-side-card.underline .t-card__body {
+  padding-bottom: 8px !important;
+}
+
 .ace-side-card .t-card__title {
   font-size: var(--td-font-size-body-medium);
+}
+
+.ace-side-card-warning .t-card__title {
+  color: @warning;
 }
 
 .ace-side-card-error .t-card__title {
@@ -222,4 +230,8 @@ body {
 
 .not-solved {
   color: @error;
+}
+
+.t-button--variant-text.t-button--shape-square {
+  height: 24px;
 }

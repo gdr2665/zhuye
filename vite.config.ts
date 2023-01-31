@@ -14,13 +14,14 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://tc.yxzl.top',
+        target: 'https://api.code.yxzl.top',
         changeOrigin: true,
+        rewrite: (path) => path.replace('/api', ''),
       },
       '/ws': {
-        target: 'https://tc.yxzl.top',
+        target: 'https://api.code.yxzl.top',
         changeOrigin: true,
-        ws: true
+        ws: true,
       },
     },
   },

@@ -30,6 +30,7 @@ const Problem: React.FC = () => {
     if (state === 'redirect') {
       void MessagePlugin.error('该页面需要登录后才能访问')
     }
+    console.log(`/question/${id ?? ''}`)
     Axios.get(`/question/${id ?? ''}`)
       .then((response: AxiosResponse<QuestionDetailDTO>) => {
         setData(response.data)
